@@ -92,6 +92,25 @@ sustantivo(es, 'día', 'day').
 % Infinitivo: atom (en su idioma)
 % ===========================
 
+% -- Traduccion de infinitivos --
+
+traduccion_verbo(correr, run).
+traduccion_verbo(comer, eat).
+traduccion_verbo(vivir, live).
+traduccion_verbo(hablar, speak).
+traduccion_verbo(ser, be).
+traduccion_verbo(estar, be).
+traduccion_verbo(tener, have).
+traduccion_verbo(hacer, do).
+traduccion_verbo(ir, go).
+traduccion_verbo(decir, say).
+traduccion_verbo(ver, see).
+traduccion_verbo(pensar, think).
+traduccion_verbo(saber, know).
+traduccion_verbo(querer, want).
+traduccion_verbo(dar, give).
+traduccion_verbo(trabajar, work).
+
 % --- ESPAÑOL: CORRER (inf: correr) ---
 verbo(es, 'corro',    primera, singular, 'correr').
 verbo(es, 'corres',   segunda, singular, 'correr').
