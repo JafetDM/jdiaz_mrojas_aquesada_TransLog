@@ -11,10 +11,16 @@
 % TRADUCCIÓN PRINCIPAL
 % ========================================
 
+% Cargar base de datos y el parser BNF para disponer de los predicados
+:- use_module(base_datos, [traduccion_verbo/2, verbo/5, traducir/3]).
+% Load parser BNF by file (module is declared in bnf.pl)
+:- use_module('bnf.pl', [parsear_oracion_bnf/3]).
+
+
 % Traducir usando el parser BNF
 traducir_con_bnf(IdiomaOrigen, OracionTexto, Traduccion) :-
-    % Parsear con BNF
-    parsear_oracion_bnf(IdiomaOrigen, OracionTexto, Estructura),
+    % Parsear con BNF (llamada cualificada al módulo)
+    bnf_parser:parsear_oracion_bnf(IdiomaOrigen, OracionTexto, Estructura),
     % Traducir estructura
     idioma_destino(IdiomaOrigen, IdiomaDestino),
     traducir_estructura(Estructura, IdiomaOrigen, IdiomaDestino, EstructuraTraducida),
@@ -40,68 +46,72 @@ traducir_estructura(oracion(SN, SV), IdiomaOrigen, IdiomaDestino,
 % ========================================
 
 % SN: Pronombre
-traducir_sn(sn(pron(Pron)), IdiomaOrigen, IdiomaDestino, sn(pron(PronTrad))) :-
-    traducir(IdiomaOrigen, Pron, PronTrad).
+traducir_sn(sn(pron(Pron)), IdiomaOrigen, _IdiomaDestino, sn(pron(PronTrad))) :-
+    base_datos:traducir(IdiomaOrigen, Pron, PronTrad).
 
 % SN: Sustantivo solo
-traducir_sn(sn(sust(Sust)), IdiomaOrigen, IdiomaDestino, sn(sust(SustTrad))) :-
-    traducir(IdiomaOrigen, Sust, SustTrad).
+traducir_sn(sn(sust(Sust)), IdiomaOrigen, _IdiomaDestino, sn(sust(SustTrad))) :-
+    base_datos:traducir(IdiomaOrigen, Sust, SustTrad).
 
 % SN: Det + Sust
-traducir_sn(sn(det(Det), sust(Sust)), IdiomaOrigen, IdiomaDestino, 
-           sn(det(DetTrad), sust(SustTrad))) :-
-    traducir(IdiomaOrigen, Det, DetTrad),
-    traducir(IdiomaOrigen, Sust, SustTrad).
+traducir_sn(sn(det(Det), sust(Sust)), IdiomaOrigen, _IdiomaDestino, 
+        sn(det(DetTrad), sust(SustTrad))) :-
+    base_datos:traducir(IdiomaOrigen, Det, DetTrad),
+    base_datos:traducir(IdiomaOrigen, Sust, SustTrad).
 
 % SN: Det + Adj + Sust (inglés) -> Det + Sust + Adj (español)
 traducir_sn(sn(det(Det), adj(Adj), sust(Sust)), en, es, 
            sn(det(DetTrad), sust(SustTrad), adj(AdjTrad))) :-
-    traducir(en, Det, DetTrad),
-    traducir(en, Sust, SustTrad),
-    traducir(en, Adj, AdjTrad).
+    base_datos:traducir(en, Det, DetTrad),
+    base_datos:traducir(en, Sust, SustTrad),
+    base_datos:traducir(en, Adj, AdjTrad).
 
 % SN: Det + Sust + Adj (español) -> Det + Adj + Sust (inglés)
 traducir_sn(sn(det(Det), sust(Sust), adj(Adj)), es, en, 
            sn(det(DetTrad), adj(AdjTrad), sust(SustTrad))) :-
-    traducir(es, Det, DetTrad),
-    traducir(es, Sust, SustTrad),
-    traducir(es, Adj, AdjTrad).
+    base_datos:traducir(es, Det, DetTrad),
+    base_datos:traducir(es, Sust, SustTrad),
+    base_datos:traducir(es, Adj, AdjTrad).
 
 % ========================================
 % TRADUCCIÓN DE SINTAGMA VERBAL
 % ========================================
 
 % SV: Verbo simple
-traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo)), 
-           IdiomaOrigen, IdiomaDestino, 
-           sv(verbo(VerboTrad, Persona, Numero, InfTrad)), _SN) :-
+traducir_sv(sv(verbo(_Verbo, Persona, Numero, Infinitivo)), 
+        IdiomaOrigen, IdiomaDestino, 
+        sv(verbo(VerboTrad, Persona, Numero, InfTrad)), _SN) :-
+    % Nota: IdiomaDestino se usa en la llamada a traducir_verbo_conjugado
     traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
                             VerboTrad, InfTrad).
 
 % SV: Verbo + SN (objeto directo)
-traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo), SN), 
-           IdiomaOrigen, IdiomaDestino, 
-           sv(verbo(VerboTrad, Persona, Numero, InfTrad), SNTrad), _SNSujeto) :-
+traducir_sv(sv(verbo(_Verbo, Persona, Numero, Infinitivo), SN), 
+        IdiomaOrigen, IdiomaDestino, 
+        sv(verbo(VerboTrad, Persona, Numero, InfTrad), SNTrad), _SNSujeto) :-
+    % Nota: IdiomaDestino se usa en la llamada a traducir_verbo_conjugado
     traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
                             VerboTrad, InfTrad),
     traducir_sn(SN, IdiomaOrigen, IdiomaDestino, SNTrad).
 
 % SV: Verbo + Prep + SN
-traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo), prep(Prep), SN), 
-           IdiomaOrigen, IdiomaDestino, 
-           sv(verbo(VerboTrad, Persona, Numero, InfTrad), prep(PrepTrad), SNTrad), _SNSujeto) :-
+traducir_sv(sv(verbo(_Verbo, Persona, Numero, Infinitivo), prep(Prep), SN), 
+        IdiomaOrigen, IdiomaDestino, 
+        sv(verbo(VerboTrad, Persona, Numero, InfTrad), prep(PrepTrad), SNTrad), _SNSujeto) :-
+    % Nota: IdiomaDestino se usa en la llamada a traducir_verbo_conjugado
     traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
                             VerboTrad, InfTrad),
-    traducir(IdiomaOrigen, Prep, PrepTrad),
+    base_datos:traducir(IdiomaOrigen, Prep, PrepTrad),
     traducir_sn(SN, IdiomaOrigen, IdiomaDestino, SNTrad).
 
 % SV: Verbo + Adjetivo
-traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo), adj(Adj)), 
-           IdiomaOrigen, IdiomaDestino, 
-           sv(verbo(VerboTrad, Persona, Numero, InfTrad), adj(AdjTrad)), _SNSujeto) :-
+traducir_sv(sv(verbo(_Verbo, Persona, Numero, Infinitivo), adj(Adj)), 
+        IdiomaOrigen, IdiomaDestino, 
+        sv(verbo(VerboTrad, Persona, Numero, InfTrad), adj(AdjTrad)), _SNSujeto) :-
+    % Nota: IdiomaDestino se usa en la llamada a traducir_verbo_conjugado
     traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
                             VerboTrad, InfTrad),
-    traducir(IdiomaOrigen, Adj, AdjTrad).
+    base_datos:traducir(IdiomaOrigen, Adj, AdjTrad).
 
 % ========================================
 % TRADUCCIÓN DE VERBOS CONJUGADOS
@@ -111,12 +121,12 @@ traducir_verbo_conjugado(InfOrigen, Persona, Numero, IdiomaOrigen, IdiomaDestino
                         VerboTrad, InfDestino) :-
     % Obtener infinitivo en idioma destino
     (IdiomaOrigen = es ->
-        traduccion_verbo(InfOrigen, InfDestino)
+        base_datos:traduccion_verbo(InfOrigen, InfDestino)
     ;
-        traduccion_verbo(InfDestino, InfOrigen)
+        base_datos:traduccion_verbo(InfDestino, InfOrigen)
     ),
     % Conjugar en idioma destino
-    verbo(IdiomaDestino, VerboTrad, Persona, Numero, InfDestino).
+    base_datos:verbo(IdiomaDestino, VerboTrad, Persona, Numero, InfDestino).
 
 % ========================================
 % GENERACIÓN DE ORACIONES

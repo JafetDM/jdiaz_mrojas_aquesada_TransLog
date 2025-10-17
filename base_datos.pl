@@ -1,3 +1,5 @@
+:- module(base_datos, [traduccion_verbo/2, verbo/5, traducir/3, articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3, palabra_funcion/3]).
+
 % ========================================
 % BASE DE DATOS TRADUCTOR INGLÉS-ESPAÑOL
 % ========================================
@@ -25,6 +27,15 @@ articulo(es, 'unas', 'some').
 % PRONOMBRES PERSONALES
 % pronombre(Idioma, Palabra, Traducción)
 pronombre(en, 'I', 'yo').
+pronombre(en, 'you', 'tú').
+pronombre(en, 'he', 'él').
+pronombre(en, 'she', 'ella').
+pronombre(en, 'it', 'eso').
+pronombre(en, 'we', 'nosotros').
+pronombre(en, 'they', 'ellos').
+
+% Lowercase variants (parser downcases input)
+pronombre(en, 'i', 'yo').
 pronombre(en, 'you', 'tú').
 pronombre(en, 'he', 'él').
 pronombre(en, 'she', 'ella').
