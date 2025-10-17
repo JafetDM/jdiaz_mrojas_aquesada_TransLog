@@ -1,143 +1,150 @@
-:- ensure_loaded('base_datos.pl').
+% ========================================
+% MOTOR DE TRADUCCIÓN CON ANÁLISIS SINTÁCTICO
+% reglas_traduccion.pl
+% ========================================
+% 
+% Contiene las reglas de traducción basadas en
+% estructuras sintácticas parseadas con BNF
+% ========================================
 
-% ----------------------------------------
-% Auxiliares
-% ----------------------------------------
-minuscula(Palabra, Minuscula) :-
-    atom_codes(Palabra, Codigos),
-    maplist(to_lower_code, Codigos, CodigosMin),
-    atom_codes(Minuscula, CodigosMin).
+% ========================================
+% TRADUCCIÓN PRINCIPAL
+% ========================================
 
-to_lower_code(C, C) :- C >= 97, C =< 122, !.
-to_lower_code(C, M) :- C >= 65, C =< 90, !, M is C + 32.
-to_lower_code(C, C).
+% Traducir usando el parser BNF
+traducir_con_bnf(IdiomaOrigen, OracionTexto, Traduccion) :-
+    % Parsear con BNF
+    parsear_oracion_bnf(IdiomaOrigen, OracionTexto, Estructura),
+    % Traducir estructura
+    idioma_destino(IdiomaOrigen, IdiomaDestino),
+    traducir_estructura(Estructura, IdiomaOrigen, IdiomaDestino, EstructuraTraducida),
+    % Generar texto traducido
+    generar_oracion(EstructuraTraducida, IdiomaDestino, Traduccion).
 
-remover_puntuacion(Palabra, Limpia) :-
-    atom_codes(Palabra, Codigos),
-    include(no_es_puntuacion, Codigos, CodigosLimpios),
-    atom_codes(Limpia, CodigosLimpios).
+% Determinar idioma destino
+idioma_destino(en, es).
+idioma_destino(es, en).
 
-no_es_puntuacion(C) :- \+ member(C, [46,44,33,63,58,59,34,39]).
+% ========================================
+% TRADUCCIÓN DE ESTRUCTURAS
+% ========================================
 
-dividir_palabras(Oracion, Palabras) :-
-    atomic_list_concat(Palabras, ' ', Oracion).
+% Traducir estructura completa de oración
+traducir_estructura(oracion(SN, SV), IdiomaOrigen, IdiomaDestino, 
+                   oracion(SNTrad, SVTrad)) :-
+    traducir_sn(SN, IdiomaOrigen, IdiomaDestino, SNTrad),
+    traducir_sv(SV, IdiomaOrigen, IdiomaDestino, SVTrad, SN).
 
-separar_puntuacion(Palabra, PalabraSin, Punc) :-
-    atom_codes(Palabra, Codigos),
-    ( Codigos \= [], last(Codigos, Ult),
-      member(Ult, [46,44,33,63,58,59])
-    -> atom_codes(Punc, [Ult]),
-       append(CodigosSin, [Ult], Codigos),
-       atom_codes(PalabraSin, CodigosSin)
-    ;  PalabraSin = Palabra, Punc = '' ).
+% ========================================
+% TRADUCCIÓN DE SINTAGMA NOMINAL
+% ========================================
 
-% ----------------------------------------
-% Sintagmas Nominales
-% ----------------------------------------
-es_sintagma_nominal(Idioma, Palabra) :-
-    minuscula(Palabra, PalMin),
-    remover_puntuacion(PalMin, Limpia),
-    ( articulo(Idioma, Limpia, _) ; pronombre(Idioma, Limpia, _)
-    ; sustantivo(Idioma, Limpia, _) ; adjetivo(Idioma, Limpia, _) ).
+% SN: Pronombre
+traducir_sn(sn(pron(Pron)), IdiomaOrigen, IdiomaDestino, sn(pron(PronTrad))) :-
+    traducir(IdiomaOrigen, Pron, PronTrad).
 
-extraer_sintagma_nominal(Idioma, [Palabra|Resto], [Palabra|SN], Restante) :-
-    es_sintagma_nominal(Idioma, Palabra),
-    extraer_sn_continuacion(Idioma, Resto, SN, Restante), !.
-extraer_sintagma_nominal(_, Lista, [], Lista).
+% SN: Sustantivo solo
+traducir_sn(sn(sust(Sust)), IdiomaOrigen, IdiomaDestino, sn(sust(SustTrad))) :-
+    traducir(IdiomaOrigen, Sust, SustTrad).
 
-extraer_sn_continuacion(Idioma, [Palabra|Resto], [Palabra|SN], Restante) :-
-    minuscula(Palabra, PalMin),
-    remover_puntuacion(PalMin, Limpia),
-    ( articulo(Idioma, Limpia, _) ; adjetivo(Idioma, Limpia, _) ), !,
-    extraer_sn_continuacion(Idioma, Resto, SN, Restante).
-extraer_sn_continuacion(Idioma, [Palabra|Resto], [Palabra], Resto) :-
-    minuscula(Palabra, PalMin),
-    remover_puntuacion(PalMin, Limpia),
-    sustantivo(Idioma, Limpia, _), !.
-extraer_sn_continuacion(_, Lista, [], Lista).
+% SN: Det + Sust
+traducir_sn(sn(det(Det), sust(Sust)), IdiomaOrigen, IdiomaDestino, 
+           sn(det(DetTrad), sust(SustTrad))) :-
+    traducir(IdiomaOrigen, Det, DetTrad),
+    traducir(IdiomaOrigen, Sust, SustTrad).
 
-% ----------------------------------------
-% Sintagmas Verbales
-% ----------------------------------------
-es_sintagma_verbal(Idioma, Palabra) :-
-    minuscula(Palabra, PalMin),
-    remover_puntuacion(PalMin, Limpia),
-    verbo(Idioma, Limpia, _, _, _).
+% SN: Det + Adj + Sust (inglés) -> Det + Sust + Adj (español)
+traducir_sn(sn(det(Det), adj(Adj), sust(Sust)), en, es, 
+           sn(det(DetTrad), sust(SustTrad), adj(AdjTrad))) :-
+    traducir(en, Det, DetTrad),
+    traducir(en, Sust, SustTrad),
+    traducir(en, Adj, AdjTrad).
 
-extraer_sintagma_verbal(Idioma, [Palabra|Resto], [Palabra|SV], Restante) :-
-    es_sintagma_verbal(Idioma, Palabra),
-    extraer_sv_continuacion(Resto, SV, Restante), !.
-extraer_sintagma_verbal(_, Lista, [], Lista).
+% SN: Det + Sust + Adj (español) -> Det + Adj + Sust (inglés)
+traducir_sn(sn(det(Det), sust(Sust), adj(Adj)), es, en, 
+           sn(det(DetTrad), adj(AdjTrad), sust(SustTrad))) :-
+    traducir(es, Det, DetTrad),
+    traducir(es, Sust, SustTrad),
+    traducir(es, Adj, AdjTrad).
 
-extraer_sv_continuacion([Palabra|Resto], [Palabra|SV], Restante) :-
-    palabra_funcion(_, Palabra, _), !,
-    extraer_sv_continuacion(Resto, SV, Restante).
-extraer_sv_continuacion(Lista, [], Lista).
+% ========================================
+% TRADUCCIÓN DE SINTAGMA VERBAL
+% ========================================
 
-% ----------------------------------------
-% Complementos
-% ----------------------------------------
-analizar_complementos(_, [], []).
-analizar_complementos(Idioma, [Palabra|Resto], [Palabra|Comp]) :-
-    preposicion(Idioma, Palabra, _), !,
-    analizar_complementos(Idioma, Resto, Comp).
-analizar_complementos(Idioma, [Palabra|Resto], [SN|Comp]) :-
-    es_sintagma_nominal(Idioma, Palabra), !,
-    extraer_sintagma_nominal(Idioma, [Palabra|Resto], SN, Resto2),
-    analizar_complementos(Idioma, Resto2, Comp).
-analizar_complementos(Idioma, [Palabra|Resto], [[Palabra]|Comp]) :-
-    palabra_funcion(Idioma, Palabra, _), !,
-    analizar_complementos(Idioma, Resto, Comp).
-analizar_complementos(Idioma, [_|Resto], Comp) :-
-    analizar_complementos(Idioma, Resto, Comp).
+% SV: Verbo simple
+traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo)), 
+           IdiomaOrigen, IdiomaDestino, 
+           sv(verbo(VerboTrad, Persona, Numero, InfTrad)), _SN) :-
+    traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
+                            VerboTrad, InfTrad).
 
-% ----------------------------------------
-% Traducción
-% ----------------------------------------
-traducir_palabra(IdiomaOrigen, IdiomaDestino, Palabra, Traduccion) :-
-    separar_puntuacion(Palabra, PalSin, Punc),
-    minuscula(PalSin, PalMin),
-    ( verbo(IdiomaOrigen, PalMin, Persona, Numero, InfOrigen),
-      traduccion_verbo(InfOrigen, InfDestino),
-      ( verbo(IdiomaDestino, FormaDestino, Persona, Numero, InfDestino)
-        -> Traduccion0 = FormaDestino
-        ;  Traduccion0 = InfDestino
-      )
-    -> true
-    ; ( articulo(IdiomaOrigen, PalMin, Trad)
-      ; pronombre(IdiomaOrigen, PalMin, Trad)
-      ; sustantivo(IdiomaOrigen, PalMin, Trad)
-      ; adjetivo(IdiomaOrigen, PalMin, Trad)
-      ; preposicion(IdiomaOrigen, PalMin, Trad)
-      ; palabra_funcion(IdiomaOrigen, PalMin, Trad)
-      )
-      -> Traduccion0 = Trad
-      ; Traduccion0 = PalMin
+% SV: Verbo + SN (objeto directo)
+traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo), SN), 
+           IdiomaOrigen, IdiomaDestino, 
+           sv(verbo(VerboTrad, Persona, Numero, InfTrad), SNTrad), _SNSujeto) :-
+    traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
+                            VerboTrad, InfTrad),
+    traducir_sn(SN, IdiomaOrigen, IdiomaDestino, SNTrad).
+
+% SV: Verbo + Prep + SN
+traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo), prep(Prep), SN), 
+           IdiomaOrigen, IdiomaDestino, 
+           sv(verbo(VerboTrad, Persona, Numero, InfTrad), prep(PrepTrad), SNTrad), _SNSujeto) :-
+    traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
+                            VerboTrad, InfTrad),
+    traducir(IdiomaOrigen, Prep, PrepTrad),
+    traducir_sn(SN, IdiomaOrigen, IdiomaDestino, SNTrad).
+
+% SV: Verbo + Adjetivo
+traducir_sv(sv(verbo(Verbo, Persona, Numero, Infinitivo), adj(Adj)), 
+           IdiomaOrigen, IdiomaDestino, 
+           sv(verbo(VerboTrad, Persona, Numero, InfTrad), adj(AdjTrad)), _SNSujeto) :-
+    traducir_verbo_conjugado(Infinitivo, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
+                            VerboTrad, InfTrad),
+    traducir(IdiomaOrigen, Adj, AdjTrad).
+
+% ========================================
+% TRADUCCIÓN DE VERBOS CONJUGADOS
+% ========================================
+
+traducir_verbo_conjugado(InfOrigen, Persona, Numero, IdiomaOrigen, IdiomaDestino, 
+                        VerboTrad, InfDestino) :-
+    % Obtener infinitivo en idioma destino
+    (IdiomaOrigen = es ->
+        traduccion_verbo(InfOrigen, InfDestino)
+    ;
+        traduccion_verbo(InfDestino, InfOrigen)
     ),
-    ( Punc = '' -> Traduccion = Traduccion0 ; atom_concat(Traduccion0, Punc, Traduccion) ).
+    % Conjugar en idioma destino
+    verbo(IdiomaDestino, VerboTrad, Persona, Numero, InfDestino).
 
-traducir_palabras(_, _, [], []).
-traducir_palabras(IdiomaOrigen, IdiomaDestino, [Palabra|Resto], [T|Traducidas]) :-
-    traducir_palabra(IdiomaOrigen, IdiomaDestino, Palabra, T),
-    traducir_palabras(IdiomaOrigen, IdiomaDestino, Resto, Traducidas).
+% ========================================
+% GENERACIÓN DE ORACIONES
+% ========================================
 
-traducir_oracion(IdiomaOrigen, IdiomaDestino, Oracion, OracionTraducida) :-
-    dividir_palabras(Oracion, Palabras),
-    traducir_palabras(IdiomaOrigen, IdiomaDestino, Palabras, PalabrasTraducidas),
-    atomic_list_concat(PalabrasTraducidas, ' ', OracionTraducida).
+% Generar oración desde estructura
+generar_oracion(oracion(SN, SV), Idioma, Oracion) :-
+    generar_sn(SN, Idioma, TextoSN),
+    generar_sv(SV, Idioma, TextoSV),
+    atomic_list_concat([TextoSN, TextoSV], ' ', Oracion).
 
-% ----------------------------------------
-% Detección de idioma
-% ----------------------------------------
-detectar_idioma(Palabra, Idioma) :-
-    minuscula(Palabra, PalMin),
-    remover_puntuacion(PalMin, Limpia),
-    ( articulo(en, Limpia, _) ; pronombre(en, Limpia, _) ; sustantivo(en, Limpia, _)
-    ; verbo(en, Limpia, _, _, _) ; adjetivo(en, Limpia, _) ; preposicion(en, Limpia, _)
-    ; palabra_funcion(en, Limpia, _) ) -> Idioma = en ; Idioma = es.
+% Generar SN
+generar_sn(sn(pron(Pron)), _, Pron).
+generar_sn(sn(sust(Sust)), _, Sust).
+generar_sn(sn(det(Det), sust(Sust)), _, Texto) :-
+    atomic_list_concat([Det, Sust], ' ', Texto).
+generar_sn(sn(det(Det), adj(Adj), sust(Sust)), _, Texto) :-
+    atomic_list_concat([Det, Adj, Sust], ' ', Texto).
+generar_sn(sn(det(Det), sust(Sust), adj(Adj)), _, Texto) :-
+    atomic_list_concat([Det, Sust, Adj], ' ', Texto).
 
-traducir_automatico(Oracion, OracionTraducida) :-
-    dividir_palabras(Oracion, [Primera|_]),
-    detectar_idioma(Primera, IdiomaOrigen),
-    ( IdiomaOrigen = en -> IdiomaDestino = es ; IdiomaDestino = en ),
-    traducir_oracion(IdiomaOrigen, IdiomaDestino, Oracion, OracionTraducida).
+% Generar SV
+generar_sv(sv(verbo(Verbo, _, _, _)), _, Verbo).
+generar_sv(sv(verbo(Verbo, _, _, _), SN), Idioma, Texto) :-
+    generar_sn(SN, Idioma, TextoSN),
+    atomic_list_concat([Verbo, TextoSN], ' ', Texto).
+generar_sv(sv(verbo(Verbo, _, _, _), prep(Prep), SN), Idioma, Texto) :-
+    generar_sn(SN, Idioma, TextoSN),
+    atomic_list_concat([Verbo, Prep, TextoSN], ' ', Texto).
+generar_sv(sv(verbo(Verbo, _, _, _), adj(Adj)), _, Texto) :-
+    atomic_list_concat([Verbo, Adj], ' ', Texto).
