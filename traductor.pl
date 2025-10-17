@@ -38,9 +38,16 @@ seleccionar_modo :-
     writeln('  3. ❓ Ayuda'),
     writeln('  4. 🚪 Salir'),
     writeln(''),
-    write('👉 Opción: '),
-    read(Opcion),
-    ejecutar_modo(Opcion).
+        write('👉 Opción (escriba el número y pulse Enter): '),
+        read_line_to_string(user_input, OptRaw),
+        % aceptar entradas como "1" o "1." (el usuario no necesita poner el punto final)
+        ( OptRaw = "" -> seleccionar_modo
+        ; ( sub_string(OptRaw, _, 1, 0, ".") -> sub_string(OptRaw, 0, _, 1, OptStr) ; OptStr = OptRaw ),
+            ( catch(number_string(Opcion, OptStr), _, fail)
+            -> ejecutar_modo(Opcion)
+            ; writeln('Entrada inválida. Ingrese 1, 2, 3 o 4.'), seleccionar_modo
+            )
+        ).
 
 % Ejecutar modo seleccionado
 ejecutar_modo(1) :-
@@ -70,7 +77,7 @@ ejecutar_modo(_) :-
 iniciar_conversacion(IdiomaOrigen, IdiomaDestino, NombreBot) :-
     limpiar_pantalla,
     format('~n╔════════════════════════════════════════════╗~n', []),
-    format('║  Modo Conversacional: ~w~*|~49t║~n', [NombreBot]),
+    format('║  Modo Conversacional: ~w~n', [NombreBot]),
     format('╚════════════════════════════════════════════╝~n~n', []),
     
     idioma_nombre(IdiomaOrigen, NombreOrigen),
@@ -134,11 +141,19 @@ procesar_comando('bnf', IdiomaOrigen, IdiomaDestino, NombreBot) :-
 
 % Traducir y responder
 traducir_y_responder(Entrada, IdiomaOrigen, IdiomaDestino, NombreBot) :-
-    downcase_atom(Entrada, EntradaMin),
-    (   traducir_con_bnf(IdiomaOrigen, EntradaMin, Traduccion)
-    ->  format('~w: ~w~n~n', [NombreBot, Traduccion])
-    ;   format('~w: ❌ No puedo traducir esa oración. Intente con otra.~n~n', [NombreBot]),
-        writeln('💡 Consejo: Escriba "ejemplos" para ver oraciones válidas')
+    % Si la entrada contiene varios signos de fin de oración, tratar como párrafo
+    (   (sub_string(Entrada, _, 1, _, '.') ; sub_string(Entrada, _, 1, _, '?') ; sub_string(Entrada, _, 1, _, '!'))
+    ->  (   traducir_parrafo(IdiomaOrigen, IdiomaDestino, Entrada, ParTrad)
+        ->  format('~w: ~w~n~n', [NombreBot, ParTrad])
+        ;   format('~w: ❌ No puedo traducir ese párrafo. Intente con otra entrada.~n~n', [NombreBot])
+        )
+    ;   % caso oración simple
+        downcase_atom(Entrada, EntradaMin),
+        (   traducir_con_bnf(IdiomaOrigen, EntradaMin, Traduccion)
+        ->  format('~w: ~w~n~n', [NombreBot, Traduccion])
+        ;   format('~w: ❌ No puedo traducir esa oración. Intente con otra.~n~n', [NombreBot]),
+            writeln('💡 Consejo: Escriba "ejemplos" para ver oraciones válidas')
+        )
     ).
 
 % ========================================
