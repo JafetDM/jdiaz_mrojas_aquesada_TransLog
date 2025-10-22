@@ -1,5 +1,5 @@
 % pruebas.pl - Ejecuta pruebas automáticas para TranLog
-
+:- set_prolog_flag(encoding, utf8).
 :- consult('traductor.pl').
 
 run_all_tests :-

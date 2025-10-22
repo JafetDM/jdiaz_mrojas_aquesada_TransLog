@@ -1,5 +1,8 @@
 :- module(bnf_parser, [parsear_oracion_bnf/3, parsear_bnf/3, validar_gramatica/2, mostrar_estructura/2]).
 :- use_module('base_datos.pl', [articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3, verbo/5]).
+:- set_prolog_flag(encoding, utf8).
+:- discontiguous oracion/4.
+:- discontiguous sintagma_verbal/4.
 
 % ========================================
 % GRAMÁTICA BNF PARA TRADUCCIÓN
@@ -112,6 +115,110 @@ sintagma_verbal(Idioma, sv(verbo(Verbo, Persona, Numero, Infinitivo), prep(Prep)
 sintagma_verbal(Idioma, sv(verbo(Verbo, Persona, Numero, Infinitivo), adj(Adj))) -->
     [Verbo], { verbo(Idioma, Verbo, Persona, Numero, Infinitivo) },
     [Adj], { es_adjetivo(Idioma, Adj) }.
+
+% =========================
+% NEGACIÓN
+% =========================
+% ES:  SN + "no" + Verbo (+ SN/Adj/Prep ...)
+sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf))) -->
+    ['no'], [Verbo],
+    { verbo(es, Verbo, Persona, Numero, Inf) }.
+
+sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), SN)) -->
+    ['no'], [Verbo],
+    { verbo(es, Verbo, Persona, Numero, Inf) },
+    sintagma_nominal(es, SN).
+
+sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), adj(Adj))) -->
+    ['no'], [Verbo],
+    { verbo(es, Verbo, Persona, Numero, Inf) },
+    [Adj], { es_adjetivo(es, Adj) }.
+
+sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), prep(Prep), SN)) -->
+    ['no'], [Verbo],
+    { verbo(es, Verbo, Persona, Numero, Inf) },
+    [Prep], { es_preposicion(es, Prep) },
+    sintagma_nominal(es, SN).
+
+% EN:  do/does + not + (base)verb (+ SN/Adj/Prep ...)
+%     Caso general (no 'be')
+sintagma_verbal(en, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf))) -->
+    [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    ['not'],
+    [Base],
+    { base_english_verb(Base, Inf), \+ Inf = be }.
+
+sintagma_verbal(en, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf), SN)) -->
+    [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    ['not'],
+    [Base], { base_english_verb(Base, Inf), \+ Inf = be },
+    sintagma_nominal(en, SN).
+
+sintagma_verbal(en, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf), prep(Prep), SN)) -->
+    [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    ['not'],
+    [Base], { base_english_verb(Base, Inf), \+ Inf = be },
+    [Prep], { es_preposicion(en, Prep) },
+    sintagma_nominal(en, SN).
+
+% EN:  'be' + not (+ Adj / + SN)
+sintagma_verbal(en, sv(neg_be, verbo(Be,Persona,Numero,be))) -->
+    [Be], { verbo(en, Be, Persona, Numero, be) },
+    ['not'].
+
+sintagma_verbal(en, sv(neg_be, verbo(Be,Persona,Numero,be), adj(Adj))) -->
+    [Be], { verbo(en, Be, Persona, Numero, be) },
+    ['not'],
+    [Adj], { es_adjetivo(en, Adj) }.
+
+sintagma_verbal(en, sv(neg_be, verbo(Be,Persona,Numero,be), SN)) -->
+    [Be], { verbo(en, Be, Persona, Numero, be) },
+    ['not'],
+    sintagma_nominal(en, SN).
+
+% =========================
+% PREGUNTAS SÍ/NO (sin signo)
+% =========================
+% EN: do/does + SN + (base)verb (+ SN)
+oracion(en, pregunta(sn(SN), sv(q_do(Form), verbo(base(Inf),Persona,Numero,Inf)))) -->
+    [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    sintagma_nominal(en, SN),
+    [Base], { base_english_verb(Base, Inf), \+ Inf = be }.
+
+oracion(en, pregunta(sn(SN), sv(q_do(Form), verbo(base(Inf),Persona,Numero,Inf), SN2))) -->
+    [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    sintagma_nominal(en, SN),
+    [Base], { base_english_verb(Base, Inf), \+ Inf = be },
+    sintagma_nominal(en, SN2).
+
+% EN: 'be' + SN (+ Adj / + SN)   e.g., "is she happy"
+oracion(en, pregunta(sn(SN), sv(q_be, verbo(Be,Persona,Numero,be)))) -->
+    [Be], { verbo(en, Be, Persona, Numero, be) },
+    sintagma_nominal(en, SN).
+
+oracion(en, pregunta(sn(SN), sv(q_be, verbo(Be,Persona,Numero,be), adj(Adj)))) -->
+    [Be], { verbo(en, Be, Persona, Numero, be) },
+    sintagma_nominal(en, SN),
+    [Adj], { es_adjetivo(en, Adj) }.
+
+% ES: inversión simple Verbo + SN   e.g., "come ella comida"
+oracion(es, pregunta(sn(SN), sv(q_es, verbo(Verbo,Persona,Numero,Inf)))) -->
+    [Verbo], { verbo(es, Verbo, Persona, Numero, Inf) },
+    sintagma_nominal(es, SN).
+
+oracion(es, pregunta(sn(SN), sv(q_es, verbo(Verbo,Persona,Numero,Inf), SN2))) -->
+    [Verbo], { verbo(es, Verbo, Persona, Numero, Inf) },
+    sintagma_nominal(es, SN),
+    sintagma_nominal(es, SN2).
+
+% ====== Auxiliares de la DCG ======
+% do/does según persona/número (presente)
+aux_do('do',   base,  Persona, plural)  :- member(Persona,[primera,segunda,tercera]).
+aux_do('do',   base,  Persona, singular):- member(Persona,[primera,segunda]).
+aux_do('does', s3,    tercera, singular).
+
+% Base verbal inglesa conocida (infinitivo “texto”)
+base_english_verb(W, Inf) :- member(Inf,[run,eat,speak,have,sleep,be]), atom_string(Inf,W).
 
 % ========================================
 % PARSER PRINCIPAL CON BNF
