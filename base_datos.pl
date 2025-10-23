@@ -1,8 +1,4 @@
-:- module(base_datos,
-  [ traduccion_verbo/2, verbo/5, traducir/3
-  , articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3
-  , sinonimo/3
-  ]).
+:- module(base_datos,[ traduccion_verbo/2, verbo/5, traducir/3, articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3, sinonimo/3,genero_sust_es/2, pron_feats/4]).
 :- set_prolog_flag(encoding, utf8).
 
 % ========================================
@@ -51,6 +47,24 @@ pronombre(es, 'ella', 'she').
 pronombre(es, 'eso', 'it').
 pronombre(es, 'nosotros', 'we').
 pronombre(es, 'ellos', 'they').
+
+% Ingles
+pron_feats(en,'i',      primera, singular).
+pron_feats(en,'you',    segunda, singular). 
+pron_feats(en,'he',     tercera, singular).
+pron_feats(en,'she',    tercera, singular).
+pron_feats(en,'it',     tercera, singular).
+pron_feats(en,'we',     primera, plural).
+pron_feats(en,'they',   tercera, plural).
+
+% Español
+pron_feats(es,'yo',       primera, singular).
+pron_feats(es,'tú',       segunda, singular).
+pron_feats(es,'él',       tercera, singular).
+pron_feats(es,'ella',     tercera, singular).
+pron_feats(es,'eso',      tercera, singular).
+pron_feats(es,'nosotros', primera, plural).
+pron_feats(es,'ellos',    tercera, plural).
 
 % -------------------------
 % SUSTANTIVOS 
@@ -243,6 +257,7 @@ sustantivo(en, 'police', 'policía').
 sustantivo(en, 'chef', 'chef').
 sustantivo(en, 'artist', 'artista').
 sustantivo(en, 'writer', 'escritor').
+
 sustantivo(es, 'león', 'lion').
 sustantivo(es, 'tigre', 'tiger').
 sustantivo(es, 'oso', 'bear').
@@ -394,6 +409,158 @@ sustantivo(es, 'océano', 'ocean').
 sustantivo(es, 'clima', 'weather').
 sustantivo(es, 'estación', 'season').
 
+% -------------------------
+% GENERO DE SUSTANTIVOS ESPAÑOLES
+% -------------------------
+genero_sust_es('león', masc).
+genero_sust_es('tigre', masc).
+genero_sust_es('oso', masc).
+genero_sust_es('elefante', masc).
+genero_sust_es('mono', masc).
+genero_sust_es('conejo', masc).
+genero_sust_es('caballo', masc).
+genero_sust_es('oveja', fem).
+genero_sust_es('cabra', fem).
+genero_sust_es('pollo', masc).
+genero_sust_es('pato', masc).
+genero_sust_es('pez', masc).
+genero_sust_es('pan', masc).
+genero_sust_es('queso', masc).
+genero_sust_es('mantequilla', fem).
+genero_sust_es('leche', fem).
+genero_sust_es('café', masc).
+genero_sust_es('té', masc).
+genero_sust_es('manzana', fem).
+genero_sust_es('plátano', masc).
+genero_sust_es('naranja', fem).
+genero_sust_es('uva', fem).
+genero_sust_es('carne', fem).
+genero_sust_es('arroz', masc).
+genero_sust_es('huevo', masc).
+genero_sust_es('bolsa', fem).
+genero_sust_es('sombrero', masc).
+genero_sust_es('camisa', fem).
+genero_sust_es('zapato', masc).
+genero_sust_es('reloj', masc).
+genero_sust_es('anillo', masc).
+genero_sust_es('llave', fem).
+genero_sust_es('lámpara', fem).
+genero_sust_es('espejo', masc).
+genero_sust_es('centro comercial', masc).
+genero_sust_es('cine', masc).
+genero_sust_es('médico', masc).
+genero_sust_es('enfermero', masc).
+genero_sust_es('ingeniero', masc).
+genero_sust_es('conductor', masc).
+genero_sust_es('policía', masc).
+genero_sust_es('chef', masc).
+genero_sust_es('artista', masc).
+genero_sust_es('escritor', masc).
+genero_sust_es('gato', masc).
+genero_sust_es('perro', masc).
+genero_sust_es('casa', fem).
+genero_sust_es('hogar', masc).
+genero_sust_es('coche', masc).
+genero_sust_es('carro', masc).
+genero_sust_es('auto', masc).
+genero_sust_es('libro', masc).
+genero_sust_es('mesa', fem).
+genero_sust_es('silla', fem).
+genero_sust_es('agua', fem).
+genero_sust_es('comida', fem).
+genero_sust_es('amigo', masc).
+genero_sust_es('madre', fem).
+genero_sust_es('padre', masc).
+genero_sust_es('hermana', fem).
+genero_sust_es('hermano', masc).
+genero_sust_es('escuela', fem).
+genero_sust_es('ciudad', fem).
+genero_sust_es('país', masc).
+genero_sust_es('árbol', masc).
+genero_sust_es('flor', fem).
+genero_sust_es('día', masc).
+genero_sust_es('noche', fem).
+genero_sust_es('calle', fem).
+genero_sust_es('carretera', fem).
+genero_sust_es('computadora', fem).
+genero_sust_es('teléfono', masc).
+genero_sust_es('música', fem).
+genero_sust_es('película', fem).
+genero_sust_es('trabajo', masc).
+genero_sust_es('juego', masc).
+genero_sust_es('hombre', masc).
+genero_sust_es('mujer', fem).
+genero_sust_es('niño', masc).
+genero_sust_es('niños', masc).
+genero_sust_es('chico', masc).
+genero_sust_es('chica', fem).
+genero_sust_es('bebida', fem).
+genero_sust_es('puerta', fem).
+genero_sust_es('ventana', fem).
+genero_sust_es('cama', fem).
+genero_sust_es('habitación', fem).
+genero_sust_es('baño', masc).
+genero_sust_es('cocina', fem).
+genero_sust_es('tienda', fem).
+genero_sust_es('mercado', masc).
+genero_sust_es('dinero', masc).
+genero_sust_es('tiempo', masc).
+genero_sust_es('mundo', masc).
+genero_sust_es('persona', fem).
+genero_sust_es('familia', fem).
+genero_sust_es('mano', fem).
+genero_sust_es('ojo', masc).
+genero_sust_es('cabeza', fem).
+genero_sust_es('cara', fem).
+genero_sust_es('sol', masc).
+genero_sust_es('luna', fem).
+genero_sust_es('mar', masc).
+genero_sust_es('montaña', fem).
+genero_sust_es('río', masc).
+genero_sust_es('aeropuerto', masc).
+genero_sust_es('tren', masc).
+genero_sust_es('autobús', masc).
+genero_sust_es('bicicleta', fem).
+genero_sust_es('isla', fem).
+genero_sust_es('desierto', masc).
+genero_sust_es('lago', masc).
+genero_sust_es('universidad', fem).
+genero_sust_es('hospital', masc).
+genero_sust_es('restaurante', masc).
+genero_sust_es('cafetería', fem).
+genero_sust_es('hotel', masc).
+genero_sust_es('supermercado', masc).
+genero_sust_es('iglesia', fem).
+genero_sust_es('museo', masc).
+genero_sust_es('biblioteca', fem).
+genero_sust_es('parque', masc).
+genero_sust_es('plaza', fem).
+genero_sust_es('puente', masc).
+genero_sust_es('torre', fem).
+genero_sust_es('castillo', masc).
+genero_sust_es('estación', fem).
+genero_sust_es('fábrica', fem).
+genero_sust_es('apartamento', masc).
+genero_sust_es('dormitorio', masc).
+genero_sust_es('piso', masc).
+genero_sust_es('pared', fem).
+genero_sust_es('techo', masc).
+genero_sust_es('mochila', fem).
+genero_sust_es('lápiz', masc).
+genero_sust_es('bolígrafo', masc).
+genero_sust_es('cuaderno', masc).
+genero_sust_es('profesor', masc).
+genero_sust_es('estudiante', masc).
+genero_sust_es('bebé', masc).
+genero_sust_es('infancia', fem).
+genero_sust_es('vida', fem).
+genero_sust_es('amor', masc).
+genero_sust_es('felicidad', fem).
+genero_sust_es('pueblo', masc).
+genero_sust_es('playa', fem).
+genero_sust_es('bosque', masc).
+genero_sust_es('océano', masc).
+genero_sust_es('clima', masc).
 
 % -------------------------
 % VERBOS (presente) + mapeo de infinitivos
@@ -1182,9 +1349,6 @@ adjetivo(es, 'bonito', 'beautiful').
 adjetivo(es, 'feo', 'ugly').
 adjetivo(es, 'fácil', 'easy').
 adjetivo(es, 'difícil', 'difficult').
-
-
-
 adjetivo(es, 'limpio', 'clean').
 adjetivo(es, 'sucio', 'dirty').
 adjetivo(es, 'fuerte', 'strong').

@@ -41,7 +41,7 @@ modo(IdO, IdD) :-
     writeln('   Escriba "salir" para volver al menú'),
     separador,
     nl,
-    format('TransLog: Bienvenido!, estoy listo para traducir de ~w a ~w~n.', [NO, ND]),
+    format('TransLog: Bienvenido!, estoy listo para traducir de ~w a ~w~n', [NO, ND]),
     loop(IdO, IdD).
 
 loop(IdO, IdD) :-
