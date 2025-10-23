@@ -138,7 +138,155 @@ sustantivo(en, 'forest', 'bosque').
 sustantivo(en, 'ocean', 'océano').
 sustantivo(en, 'weather', 'clima').
 sustantivo(en, 'season', 'estación').
-
+sustantivo(en, 'airport', 'aeropuerto').
+sustantivo(en, 'train', 'tren').
+sustantivo(en, 'bus', 'autobús').
+sustantivo(en, 'bicycle', 'bicicleta').
+sustantivo(en, 'mountain', 'montaña').
+sustantivo(en, 'forest', 'bosque').
+sustantivo(en, 'island', 'isla').
+sustantivo(en, 'desert', 'desierto').
+sustantivo(en, 'lake', 'lago').
+sustantivo(en, 'river', 'río').
+sustantivo(en, 'ocean', 'océano').
+sustantivo(en, 'beach', 'playa').
+sustantivo(en, 'school', 'escuela').
+sustantivo(en, 'university', 'universidad').
+sustantivo(en, 'hospital', 'hospital').
+sustantivo(en, 'restaurant', 'restaurante').
+sustantivo(en, 'cafe', 'cafetería').
+sustantivo(en, 'hotel', 'hotel').
+sustantivo(en, 'market', 'mercado').
+sustantivo(en, 'supermarket', 'supermercado').
+sustantivo(en, 'church', 'iglesia').
+sustantivo(en, 'museum', 'museo').
+sustantivo(en, 'library', 'biblioteca').
+sustantivo(en, 'park', 'parque').
+sustantivo(en, 'garden', 'jardín').
+sustantivo(en, 'street', 'calle').
+sustantivo(en, 'square', 'plaza').
+sustantivo(en, 'bridge', 'puente').
+sustantivo(en, 'tower', 'torre').
+sustantivo(en, 'castle', 'castillo').
+sustantivo(en, 'road', 'carretera').
+sustantivo(en, 'station', 'estación').
+sustantivo(en, 'factory', 'fábrica').
+sustantivo(en, 'shop', 'tienda').
+sustantivo(en, 'store', 'almacén').
+sustantivo(en, 'apartment', 'apartamento').
+sustantivo(en, 'house', 'casa').
+sustantivo(en, 'room', 'habitación').
+sustantivo(en, 'kitchen', 'cocina').
+sustantivo(en, 'bathroom', 'baño').
+sustantivo(en, 'bedroom', 'dormitorio').
+sustantivo(en, 'garden', 'jardín').
+sustantivo(en, 'window', 'ventana').
+sustantivo(en, 'door', 'puerta').
+sustantivo(en, 'floor', 'piso').
+sustantivo(en, 'ceiling', 'techo').
+sustantivo(en, 'wall', 'pared').
+sustantivo(en, 'roof', 'techo').
+sustantivo(en, 'chair', 'silla').
+sustantivo(en, 'table', 'mesa').
+sustantivo(en, 'lion', 'león').
+sustantivo(en, 'tiger', 'tigre').
+sustantivo(en, 'bear', 'oso').
+sustantivo(en, 'elephant', 'elefante').
+sustantivo(en, 'monkey', 'mono').
+sustantivo(en, 'rabbit', 'conejo').
+sustantivo(en, 'horse', 'caballo').
+sustantivo(en, 'sheep', 'oveja').
+sustantivo(en, 'goat', 'cabra').
+sustantivo(en, 'chicken', 'pollo').
+sustantivo(en, 'duck', 'pato').
+sustantivo(en, 'fish', 'pez').
+sustantivo(en, 'bread', 'pan').
+sustantivo(en, 'cheese', 'queso').
+sustantivo(en, 'butter', 'mantequilla').
+sustantivo(en, 'milk', 'leche').
+sustantivo(en, 'coffee', 'café').
+sustantivo(en, 'tea', 'té').
+sustantivo(en, 'apple', 'manzana').
+sustantivo(en, 'banana', 'plátano').
+sustantivo(en, 'orange', 'naranja').
+sustantivo(en, 'grape', 'uva').
+sustantivo(en, 'meat', 'carne').
+sustantivo(en, 'rice', 'arroz').
+sustantivo(en, 'egg', 'huevo').
+sustantivo(en, 'bag', 'bolsa').
+sustantivo(en, 'hat', 'sombrero').
+sustantivo(en, 'shirt', 'camisa').
+sustantivo(en, 'shoe', 'zapato').
+sustantivo(en, 'watch', 'reloj').
+sustantivo(en, 'ring', 'anillo').
+sustantivo(en, 'key', 'llave').
+sustantivo(en, 'lamp', 'lámpara').
+sustantivo(en, 'mirror', 'espejo').
+sustantivo(en, 'phone', 'teléfono').
+sustantivo(en, 'station', 'estación').
+sustantivo(en, 'airport', 'aeropuerto').
+sustantivo(en, 'restaurant', 'restaurante').
+sustantivo(en, 'mall', 'centro comercial').
+sustantivo(en, 'cinema', 'cine').
+sustantivo(en, 'park', 'parque').
+sustantivo(en, 'hotel', 'hotel').
+sustantivo(en, 'beach', 'playa').
+sustantivo(en, 'mountain', 'montaña').
+sustantivo(en, 'river', 'río').
+sustantivo(en, 'doctor', 'médico').
+sustantivo(en, 'nurse', 'enfermero').
+sustantivo(en, 'engineer', 'ingeniero').
+sustantivo(en, 'teacher', 'profesor').
+sustantivo(en, 'student', 'estudiante').
+sustantivo(en, 'driver', 'conductor').
+sustantivo(en, 'police', 'policía').
+sustantivo(en, 'chef', 'chef').
+sustantivo(en, 'artist', 'artista').
+sustantivo(en, 'writer', 'escritor').
+sustantivo(es, 'león', 'lion').
+sustantivo(es, 'tigre', 'tiger').
+sustantivo(es, 'oso', 'bear').
+sustantivo(es, 'elefante', 'elephant').
+sustantivo(es, 'mono', 'monkey').
+sustantivo(es, 'conejo', 'rabbit').
+sustantivo(es, 'caballo', 'horse').
+sustantivo(es, 'oveja', 'sheep').
+sustantivo(es, 'cabra', 'goat').
+sustantivo(es, 'pollo', 'chicken').
+sustantivo(es, 'pato', 'duck').
+sustantivo(es, 'pez', 'fish').
+sustantivo(es, 'pan', 'bread').
+sustantivo(es, 'queso', 'cheese').
+sustantivo(es, 'mantequilla', 'butter').
+sustantivo(es, 'leche', 'milk').
+sustantivo(es, 'café', 'coffee').
+sustantivo(es, 'té', 'tea').
+sustantivo(es, 'manzana', 'apple').
+sustantivo(es, 'plátano', 'banana').
+sustantivo(es, 'naranja', 'orange').
+sustantivo(es, 'uva', 'grape').
+sustantivo(es, 'carne', 'meat').
+sustantivo(es, 'arroz', 'rice').
+sustantivo(es, 'huevo', 'egg').
+sustantivo(es, 'bolsa', 'bag').
+sustantivo(es, 'sombrero', 'hat').
+sustantivo(es, 'camisa', 'shirt').
+sustantivo(es, 'zapato', 'shoe').
+sustantivo(es, 'reloj', 'watch').
+sustantivo(es, 'anillo', 'ring').
+sustantivo(es, 'llave', 'key').
+sustantivo(es, 'lámpara', 'lamp').
+sustantivo(es, 'espejo', 'mirror').
+sustantivo(es, 'centro comercial', 'mall').
+sustantivo(es, 'cine', 'cinema').
+sustantivo(es, 'médico', 'doctor').
+sustantivo(es, 'enfermero', 'nurse').
+sustantivo(es, 'ingeniero', 'engineer').
+sustantivo(es, 'conductor', 'driver').
+sustantivo(es, 'policía', 'police').
+sustantivo(es, 'chef', 'chef').
+sustantivo(es, 'artista', 'artist').
+sustantivo(es, 'escritor', 'writer').
 sustantivo(es, 'gato', 'cat').
 sustantivo(es, 'perro', 'dog').
 sustantivo(es, 'casa', 'house').
@@ -200,7 +348,34 @@ sustantivo(es, 'luna', 'moon').
 sustantivo(es, 'mar', 'sea').
 sustantivo(es, 'montaña', 'mountain').
 sustantivo(es, 'río', 'river').
-
+sustantivo(es, 'aeropuerto', 'airport').
+sustantivo(es, 'tren', 'train').
+sustantivo(es, 'autobús', 'bus').
+sustantivo(es, 'bicicleta', 'bicycle').
+sustantivo(es, 'isla', 'island').
+sustantivo(es, 'desierto', 'desert').
+sustantivo(es, 'lago', 'lake').
+sustantivo(es, 'universidad', 'university').
+sustantivo(es, 'hospital', 'hospital').
+sustantivo(es, 'restaurante', 'restaurant').
+sustantivo(es, 'cafetería', 'cafe').
+sustantivo(es, 'hotel', 'hotel').
+sustantivo(es, 'supermercado', 'supermarket').
+sustantivo(es, 'iglesia', 'church').
+sustantivo(es, 'museo', 'museum').
+sustantivo(es, 'biblioteca', 'library').
+sustantivo(es, 'parque', 'park').
+sustantivo(es, 'plaza', 'square').
+sustantivo(es, 'puente', 'bridge').
+sustantivo(es, 'torre', 'tower').
+sustantivo(es, 'castillo', 'castle').
+sustantivo(es, 'estación', 'station').
+sustantivo(es, 'fábrica', 'factory').
+sustantivo(es, 'apartamento', 'apartment').
+sustantivo(es, 'dormitorio', 'bedroom').
+sustantivo(es, 'piso', 'floor').
+sustantivo(es, 'pared', 'wall').
+sustantivo(es, 'techo', 'ceiling').
 sustantivo(es, 'mochila', 'schoolbag').
 sustantivo(es, 'lápiz', 'pencil').
 sustantivo(es, 'bolígrafo', 'pen').
@@ -249,6 +424,23 @@ traduccion_verbo(pensar, think).
 traduccion_verbo(sentir, feel).
 traduccion_verbo(trabajar, work).
 traduccion_verbo(ayudar, help).
+traduccion_verbo(comprar, buy).
+traduccion_verbo(vender, sell).
+traduccion_verbo(encontrar, find).
+traduccion_verbo(perder, lose).
+traduccion_verbo(caminar, walk).
+traduccion_verbo(creer, believe).
+traduccion_verbo(entender, understand).
+traduccion_verbo(decidir, decide).
+traduccion_verbo(salir, leave).
+traduccion_verbo(abrir, open).
+traduccion_verbo(cerrar, close).
+traduccion_verbo(cocinar, cook).
+traduccion_verbo(beber, drink).
+traduccion_verbo(dibujar, draw).
+traduccion_verbo(dar, give).
+traduccion_verbo(recibir, receive).
+traduccion_verbo(enviar, send).
 
 % ESP: correr
 verbo(es, 'corro',    primera, singular, 'correr').
@@ -657,6 +849,278 @@ verbo(en, 'helps',   tercera, singular, 'help').
 verbo(en, 'help',    primera, plural,   'help').
 verbo(en, 'help',    segunda, plural,   'help').
 verbo(en, 'help',    tercera, plural,   'help').
+
+% ESP: comprar
+verbo(es, 'compro',    primera, singular, 'comprar').
+verbo(es, 'compras',   segunda, singular, 'comprar').
+verbo(es, 'compra',    tercera, singular, 'comprar').
+verbo(es, 'compramos', primera, plural,   'comprar').
+verbo(es, 'compráis',  segunda, plural,   'comprar').
+verbo(es, 'compran',   tercera, plural,   'comprar').
+
+% EN: buy
+verbo(en, 'buy',  primera, singular, 'buy').
+verbo(en, 'buy',  segunda, singular, 'buy').
+verbo(en, 'buys', tercera, singular, 'buy').
+verbo(en, 'buy',  primera, plural,   'buy').
+verbo(en, 'buy',  segunda, plural,   'buy').
+verbo(en, 'buy',  tercera, plural,   'buy').
+
+% ESP: vender
+verbo(es, 'vendo',    primera, singular, 'vender').
+verbo(es, 'vendes',   segunda, singular, 'vender').
+verbo(es, 'vende',    tercera, singular, 'vender').
+verbo(es, 'vendemos', primera, plural,   'vender').
+verbo(es, 'vendéis',  segunda, plural,   'vender').
+verbo(es, 'venden',   tercera, plural,   'vender').
+
+% EN: sell
+verbo(en, 'sell',  primera, singular, 'sell').
+verbo(en, 'sell',  segunda, singular, 'sell').
+verbo(en, 'sells', tercera, singular, 'sell').
+verbo(en, 'sell',  primera, plural,   'sell').
+verbo(en, 'sell',  segunda, plural,   'sell').
+verbo(en, 'sell',  tercera, plural,   'sell').
+
+% ESP: encontrar
+verbo(es, 'encuentro',    primera, singular, 'encontrar').
+verbo(es, 'encuentras',   segunda, singular, 'encontrar').
+verbo(es, 'encuentra',    tercera, singular, 'encontrar').
+verbo(es, 'encontramos',  primera, plural,   'encontrar').
+verbo(es, 'encontráis',   segunda, plural,   'encontrar').
+verbo(es, 'encuentran',   tercera, plural,   'encontrar').
+
+% EN: find
+verbo(en, 'find',  primera, singular, 'find').
+verbo(en, 'find',  segunda, singular, 'find').
+verbo(en, 'finds', tercera, singular, 'find').
+verbo(en, 'find',  primera, plural,   'find').
+verbo(en, 'find',  segunda, plural,   'find').
+verbo(en, 'find',  tercera, plural,   'find').
+
+% ESP: perder
+verbo(es, 'pierdo',    primera, singular, 'perder').
+verbo(es, 'pierdes',   segunda, singular, 'perder').
+verbo(es, 'pierde',    tercera, singular, 'perder').
+verbo(es, 'perdemos',  primera, plural,   'perder').
+verbo(es, 'perdéis',   segunda, plural,   'perder').
+verbo(es, 'pierden',   tercera, plural,   'perder').
+
+% EN: lose
+verbo(en, 'lose',  primera, singular, 'lose').
+verbo(en, 'lose',  segunda, singular, 'lose').
+verbo(en, 'loses', tercera, singular, 'lose').
+verbo(en, 'lose',  primera, plural,   'lose').
+verbo(en, 'lose',  segunda, plural,   'lose').
+verbo(en, 'lose',  tercera, plural,   'lose').
+
+% ESP: caminar
+verbo(es, 'camino',    primera, singular, 'caminar').
+verbo(es, 'caminas',   segunda, singular, 'caminar').
+verbo(es, 'camina',    tercera, singular, 'caminar').
+verbo(es, 'caminamos', primera, plural,   'caminar').
+verbo(es, 'camináis',  segunda, plural,   'caminar').
+verbo(es, 'caminan',   tercera, plural,   'caminar').
+
+% EN: walk
+verbo(en, 'walk',  primera, singular, 'walk').
+verbo(en, 'walk',  segunda, singular, 'walk').
+verbo(en, 'walks', tercera, singular, 'walk').
+verbo(en, 'walk',  primera, plural,   'walk').
+verbo(en, 'walk',  segunda, plural,   'walk').
+verbo(en, 'walk',  tercera, plural,   'walk').
+
+% ESP: creer
+verbo(es, 'creo',    primera, singular, 'creer').
+verbo(es, 'crees',   segunda, singular, 'creer').
+verbo(es, 'cree',    tercera, singular, 'creer').
+verbo(es, 'creemos', primera, plural,   'creer').
+verbo(es, 'creéis',  segunda, plural,   'creer').
+verbo(es, 'creen',   tercera, plural,   'creer').
+
+% EN: believe
+verbo(en, 'believe',  primera, singular, 'believe').
+verbo(en, 'believe',  segunda, singular, 'believe').
+verbo(en, 'believes', tercera, singular, 'believe').
+verbo(en, 'believe',  primera, plural,   'believe').
+verbo(en, 'believe',  segunda, plural,   'believe').
+verbo(en, 'believe',  tercera, plural,   'believe').
+
+% ESP: entender
+verbo(es, 'entiendo',    primera, singular, 'entender').
+verbo(es, 'entiendes',   segunda, singular, 'entender').
+verbo(es, 'entiende',    tercera, singular, 'entender').
+verbo(es, 'entendemos',  primera, plural,   'entender').
+verbo(es, 'entendéis',   segunda, plural,   'entender').
+verbo(es, 'entienden',   tercera, plural,   'entender').
+
+% EN: understand
+verbo(en, 'understand',  primera, singular, 'understand').
+verbo(en, 'understand',  segunda, singular, 'understand').
+verbo(en, 'understands', tercera, singular, 'understand').
+verbo(en, 'understand',  primera, plural,   'understand').
+verbo(en, 'understand',  segunda, plural,   'understand').
+verbo(en, 'understand',  tercera, plural,   'understand').
+
+% ESP: decidir
+verbo(es, 'decido',    primera, singular, 'decidir').
+verbo(es, 'decides',   segunda, singular, 'decidir').
+verbo(es, 'decide',    tercera, singular, 'decidir').
+verbo(es, 'decidimos', primera, plural,   'decidir').
+verbo(es, 'decidís',   segunda, plural,   'decidir').
+verbo(es, 'deciden',   tercera, plural,   'decidir').
+
+% EN: decide
+verbo(en, 'decide',  primera, singular, 'decide').
+verbo(en, 'decide',  segunda, singular, 'decide').
+verbo(en, 'decides', tercera, singular, 'decide').
+verbo(en, 'decide',  primera, plural,   'decide').
+verbo(en, 'decide',  segunda, plural,   'decide').
+verbo(en, 'decide',  tercera, plural,   'decide').
+
+% ESP: salir
+verbo(es, 'salgo',    primera, singular, 'salir').
+verbo(es, 'sales',   segunda, singular, 'salir').
+verbo(es, 'sale',    tercera, singular, 'salir').
+verbo(es, 'salimos', primera, plural,   'salir').
+verbo(es, 'salís',   segunda, plural,   'salir').
+verbo(es, 'salen',   tercera, plural,   'salir').
+
+% EN: leave
+verbo(en, 'leave',  primera, singular, 'leave').
+verbo(en, 'leave',  segunda, singular, 'leave').
+verbo(en, 'leaves', tercera, singular, 'leave').
+verbo(en, 'leave',  primera, plural,   'leave').
+verbo(en, 'leave',  segunda, plural,   'leave').
+verbo(en, 'leave',  tercera, plural,   'leave').
+
+% ESP: abrir
+verbo(es, 'abro',    primera, singular, 'abrir').
+verbo(es, 'abres',   segunda, singular, 'abrir').
+verbo(es, 'abre',    tercera, singular, 'abrir').
+verbo(es, 'abrimos', primera, plural,   'abrir').
+verbo(es, 'abrís',   segunda, plural,   'abrir').
+verbo(es, 'abren',   tercera, plural,   'abrir').
+
+% EN: open
+verbo(en, 'open',  primera, singular, 'open').
+verbo(en, 'open',  segunda, singular, 'open').
+verbo(en, 'opens', tercera, singular, 'open').
+verbo(en, 'open',  primera, plural,   'open').
+verbo(en, 'open',  segunda, plural,   'open').
+verbo(en, 'open',  tercera, plural,   'open').
+
+% ESP: cerrar
+verbo(es, 'cierro',    primera, singular, 'cerrar').
+verbo(es, 'cierras',   segunda, singular, 'cerrar').
+verbo(es, 'cierra',    tercera, singular, 'cerrar').
+verbo(es, 'cerramos',  primera, plural,   'cerrar').
+verbo(es, 'cerráis',   segunda, plural,   'cerrar').
+verbo(es, 'cierran',   tercera, plural,   'cerrar').
+
+% EN: close
+verbo(en, 'close',  primera, singular, 'close').
+verbo(en, 'close',  segunda, singular, 'close').
+verbo(en, 'closes', tercera, singular, 'close').
+verbo(en, 'close',  primera, plural,   'close').
+verbo(en, 'close',  segunda, plural,   'close').
+verbo(en, 'close',  tercera, plural,   'close').
+
+% ESP: cocinar
+verbo(es, 'cocino',    primera, singular, 'cocinar').
+verbo(es, 'cocinas',   segunda, singular, 'cocinar').
+verbo(es, 'cocina',    tercera, singular, 'cocinar').
+verbo(es, 'cocinamos', primera, plural,   'cocinar').
+verbo(es, 'cocináis',  segunda, plural,   'cocinar').
+verbo(es, 'cocinan',   tercera, plural,   'cocinar').
+
+% EN: cook
+verbo(en, 'cook',  primera, singular, 'cook').
+verbo(en, 'cook',  segunda, singular, 'cook').
+verbo(en, 'cooks', tercera, singular, 'cook').
+verbo(en, 'cook',  primera, plural,   'cook').
+verbo(en, 'cook',  segunda, plural,   'cook').
+verbo(en, 'cook',  tercera, plural,   'cook').
+
+% ESP: beber
+verbo(es, 'bebo',    primera, singular, 'beber').
+verbo(es, 'bebes',   segunda, singular, 'beber').
+verbo(es, 'bebe',    tercera, singular, 'beber').
+verbo(es, 'bebemos', primera, plural,   'beber').
+verbo(es, 'bebéis',  segunda, plural,   'beber').
+verbo(es, 'beben',   tercera, plural,   'beber').
+
+% EN: drink
+verbo(en, 'drink',  primera, singular, 'drink').
+verbo(en, 'drink',  segunda, singular, 'drink').
+verbo(en, 'drinks', tercera, singular, 'drink').
+verbo(en, 'drink',  primera, plural,   'drink').
+verbo(en, 'drink',  segunda, plural,   'drink').
+verbo(en, 'drink',  tercera, plural,   'drink').
+
+% ESP: dibujar
+verbo(es, 'dibujo',    primera, singular, 'dibujar').
+verbo(es, 'dibujas',   segunda, singular, 'dibujar').
+verbo(es, 'dibuja',    tercera, singular, 'dibujar').
+verbo(es, 'dibujamos', primera, plural,   'dibujar').
+verbo(es, 'dibujáis',  segunda, plural,   'dibujar').
+verbo(es, 'dibujan',   tercera, plural,   'dibujar').
+
+% EN: draw
+verbo(en, 'draw',  primera, singular, 'draw').
+verbo(en, 'draw',  segunda, singular, 'draw').
+verbo(en, 'draws', tercera, singular, 'draw').
+verbo(en, 'draw',  primera, plural,   'draw').
+verbo(en, 'draw',  segunda, plural,   'draw').
+verbo(en, 'draw',  tercera, plural,   'draw').
+
+% ESP: dar
+verbo(es, 'doy',      primera, singular, 'dar').
+verbo(es, 'das',      segunda, singular, 'dar').
+verbo(es, 'da',       tercera, singular, 'dar').
+verbo(es, 'damos',    primera, plural,   'dar').
+verbo(es, 'dais',     segunda, plural,   'dar').
+verbo(es, 'dan',      tercera, plural,   'dar').
+
+% EN: give
+verbo(en, 'give',  primera, singular, 'give').
+verbo(en, 'give',  segunda, singular, 'give').
+verbo(en, 'gives', tercera, singular, 'give').
+verbo(en, 'give',  primera, plural,   'give').
+verbo(en, 'give',  segunda, plural,   'give').
+verbo(en, 'give',  tercera, plural,   'give').
+
+% ESP: recibir
+verbo(es, 'recibo',    primera, singular, 'recibir').
+verbo(es, 'recibes',   segunda, singular, 'recibir').
+verbo(es, 'recibe',    tercera, singular, 'recibir').
+verbo(es, 'recibimos', primera, plural,   'recibir').
+verbo(es, 'recibís',   segunda, plural,   'recibir').
+verbo(es, 'reciben',   tercera, plural,   'recibir').
+
+% EN: receive
+verbo(en, 'receive',  primera, singular, 'receive').
+verbo(en, 'receive',  segunda, singular, 'receive').
+verbo(en, 'receives', tercera, singular, 'receive').
+verbo(en, 'receive',  primera, plural,   'receive').
+verbo(en, 'receive',  segunda, plural,   'receive').
+verbo(en, 'receive',  tercera, plural,   'receive').
+
+% ESP: enviar
+verbo(es, 'envío',    primera, singular, 'enviar').
+verbo(es, 'envías',   segunda, singular, 'enviar').
+verbo(es, 'envía',    tercera, singular, 'enviar').
+verbo(es, 'enviamos', primera, plural,   'enviar').
+verbo(es, 'enviáis',  segunda, plural,   'enviar').
+verbo(es, 'envían',   tercera, plural,   'enviar').
+
+% EN: send
+verbo(en, 'send',  primera, singular, 'send').
+verbo(en, 'send',  segunda, singular, 'send').
+verbo(en, 'sends', tercera, singular, 'send').
+verbo(en, 'send',  primera, plural,   'send').
+verbo(en, 'send',  segunda, plural,   'send').
+verbo(en, 'send',  tercera, plural,   'send').
 
 % -------------------------
 % ADJETIVOS 
