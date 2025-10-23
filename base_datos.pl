@@ -450,6 +450,214 @@ verbo(en, 'play',  primera, plural,   'play').
 verbo(en, 'play',  segunda, plural,   'play').
 verbo(en, 'play',  tercera, plural,   'play').
 
+% ESP: decir
+verbo(es, 'digo',    primera, singular, 'decir').
+verbo(es, 'dices',   segunda, singular, 'decir').
+verbo(es, 'dice',    tercera, singular, 'decir').
+verbo(es, 'decimos', primera, plural,   'decir').
+verbo(es, 'decís',   segunda, plural,   'decir').
+verbo(es, 'dicen',   tercera, plural,   'decir').
+
+% EN: say
+verbo(en, 'say',    primera, singular, 'say').
+verbo(en, 'say',    segunda, singular, 'say').
+verbo(en, 'says',   tercera, singular, 'say').
+verbo(en, 'say',    primera, plural,   'say').
+verbo(en, 'say',    segunda, plural,   'say').
+verbo(en, 'say',    tercera, plural,   'say').
+
+% ESP: poder
+verbo(es, 'puedo',   primera, singular, 'poder').
+verbo(es, 'puedes',  segunda, singular, 'poder').
+verbo(es, 'puede',   tercera, singular, 'poder').
+verbo(es, 'podemos', primera, plural,   'poder').
+verbo(es, 'podéis',  segunda, plural,   'poder').
+verbo(es, 'pueden',  tercera, plural,   'poder').
+
+% EN: can
+verbo(en, 'can',    primera, singular, 'can').
+verbo(en, 'can',    segunda, singular, 'can').
+verbo(en, 'can',    tercera, singular, 'can').
+verbo(en, 'can',    primera, plural,   'can').
+verbo(en, 'can',    segunda, plural,   'can').
+verbo(en, 'can',    tercera, plural,   'can').
+
+% ESP: querer
+verbo(es, 'quiero',   primera, singular, 'querer').
+verbo(es, 'quieres',  segunda, singular, 'querer').
+verbo(es, 'quiere',   tercera, singular, 'querer').
+verbo(es, 'queremos', primera, plural,   'querer').
+verbo(es, 'queréis',  segunda, plural,   'querer').
+verbo(es, 'quieren',  tercera, plural,   'querer').
+
+% EN: want
+verbo(en, 'want',    primera, singular, 'want').
+verbo(en, 'want',    segunda, singular, 'want').
+verbo(en, 'wants',   tercera, singular, 'want').
+verbo(en, 'want',    primera, plural,   'want').
+verbo(en, 'want',    segunda, plural,   'want').
+verbo(en, 'want',    tercera, plural,   'want').
+
+% ESP: necesitar
+verbo(es, 'necesito',   primera, singular, 'necesitar').
+verbo(es, 'necesitas',  segunda, singular, 'necesitar').
+verbo(es, 'necesita',   tercera, singular, 'necesitar').
+verbo(es, 'necesitamos', primera, plural, 'necesitar').
+verbo(es, 'necesitáis', segunda, plural,   'necesitar').
+verbo(es, 'necesitan',  tercera, plural,   'necesitar').
+
+% EN: need
+verbo(en, 'need',    primera, singular, 'need').
+verbo(en, 'need',    segunda, singular, 'need').
+verbo(en, 'needs',   tercera, singular, 'need').
+verbo(en, 'need',    primera, plural,   'need').
+verbo(en, 'need',    segunda, plural,   'need').
+verbo(en, 'need',    tercera, plural,   'need').
+
+% ESP: llegar
+verbo(es, 'llego',    primera, singular, 'llegar').
+verbo(es, 'llegas',   segunda, singular, 'llegar').
+verbo(es, 'llega',    tercera, singular, 'llegar').
+verbo(es, 'llegamos', primera, plural,   'llegar').
+verbo(es, 'llegáis',  segunda, plural,   'llegar').
+verbo(es, 'llegan',   tercera, plural,   'llegar').
+
+% EN: arrive
+verbo(en, 'arrive',    primera, singular, 'arrive').
+verbo(en, 'arrive',    segunda, singular, 'arrive').
+verbo(en, 'arrives',   tercera, singular, 'arrive').
+verbo(en, 'arrive',    primera, plural,   'arrive').
+verbo(en, 'arrive',    segunda, plural,   'arrive').
+verbo(en, 'arrive',    tercera, plural,   'arrive').
+
+% ESP: saber
+verbo(es, 'sé',       primera, singular, 'saber').
+verbo(es, 'sabes',    segunda, singular, 'saber').
+verbo(es, 'sabe',     tercera, singular, 'saber').
+verbo(es, 'sabemos',  primera, plural,   'saber').
+verbo(es, 'sabéis',   segunda, plural,   'saber').
+verbo(es, 'saben',    tercera, plural,   'saber').
+
+% EN: know
+verbo(en, 'know',    primera, singular, 'know').
+verbo(en, 'know',    segunda, singular, 'know').
+verbo(en, 'knows',   tercera, singular, 'know').
+verbo(en, 'know',    primera, plural,   'know').
+verbo(en, 'know',    segunda, plural,   'know').
+verbo(en, 'know',    tercera, plural,   'know').
+
+% ESP: escuchar
+verbo(es, 'escucho',    primera, singular, 'escuchar').
+verbo(es, 'escuchas',   segunda, singular, 'escuchar').
+verbo(es, 'escucha',    tercera, singular, 'escuchar').
+verbo(es, 'escuchamos', primera, plural,   'escuchar').
+verbo(es, 'escucháis',  segunda, plural,   'escuchar').
+verbo(es, 'escuchan',   tercera, plural,   'escuchar').
+
+% EN: listen
+verbo(en, 'listen',    primera, singular, 'listen').
+verbo(en, 'listen',    segunda, singular, 'listen').
+verbo(en, 'listens',   tercera, singular, 'listen').
+verbo(en, 'listen',    primera, plural,   'listen').
+verbo(en, 'listen',    segunda, plural,   'listen').
+verbo(en, 'listen',    tercera, plural,   'listen').
+
+% ESP: escribir
+verbo(es, 'escribo',    primera, singular, 'escribir').
+verbo(es, 'escribes',   segunda, singular, 'escribir').
+verbo(es, 'escribe',    tercera, singular, 'escribir').
+verbo(es, 'escribimos', primera, plural,   'escribir').
+verbo(es, 'escribís',   segunda, plural,   'escribir').
+verbo(es, 'escriben',   tercera, plural,   'escribir').
+
+% EN: write
+verbo(en, 'write',    primera, singular, 'write').
+verbo(en, 'write',    segunda, singular, 'write').
+verbo(en, 'writes',   tercera, singular, 'write').
+verbo(en, 'write',    primera, plural,   'write').
+verbo(en, 'write',    segunda, plural,   'write').
+verbo(en, 'write',    tercera, plural,   'write').
+
+% ESP: leer
+verbo(es, 'leo',    primera, singular, 'leer').
+verbo(es, 'lees',   segunda, singular, 'leer').
+verbo(es, 'lee',    tercera, singular, 'leer').
+verbo(es, 'leemos', primera, plural,   'leer').
+verbo(es, 'leéis',  segunda, plural,   'leer').
+verbo(es, 'leen',   tercera, plural,   'leer').
+
+% EN: read
+verbo(en, 'read',    primera, singular, 'read').
+verbo(en, 'read',    segunda, singular, 'read').
+verbo(en, 'reads',   tercera, singular, 'read').
+verbo(en, 'read',    primera, plural,   'read').
+verbo(en, 'read',    segunda, plural,   'read').
+verbo(en, 'read',    tercera, plural,   'read').
+
+% ESP: pensar
+verbo(es, 'pienso',    primera, singular, 'pensar').
+verbo(es, 'piensas',   segunda, singular, 'pensar').
+verbo(es, 'piensa',    tercera, singular, 'pensar').
+verbo(es, 'pensamos',  primera, plural,   'pensar').
+verbo(es, 'pensáis',   segunda, plural,   'pensar').
+verbo(es, 'piensan',   tercera, plural,   'pensar').
+
+% EN: think
+verbo(en, 'think',    primera, singular, 'think').
+verbo(en, 'think',    segunda, singular, 'think').
+verbo(en, 'thinks',   tercera, singular, 'think').
+verbo(en, 'think',    primera, plural,   'think').
+verbo(en, 'think',    segunda, plural,   'think').
+verbo(en, 'think',    tercera, plural,   'think').
+
+% ESP: sentir
+verbo(es, 'siento',    primera, singular, 'sentir').
+verbo(es, 'sientes',   segunda, singular, 'sentir').
+verbo(es, 'siente',    tercera, singular, 'sentir').
+verbo(es, 'sentimos',  primera, plural,   'sentir').
+verbo(es, 'sentís',    segunda, plural,   'sentir').
+verbo(es, 'sienten',   tercera, plural,   'sentir').
+
+% EN: feel
+verbo(en, 'feel',    primera, singular, 'feel').
+verbo(en, 'feel',    segunda, singular, 'feel').
+verbo(en, 'feels',   tercera, singular, 'feel').
+verbo(en, 'feel',    primera, plural,   'feel').
+verbo(en, 'feel',    segunda, plural,   'feel').
+verbo(en, 'feel',    tercera, plural,   'feel').
+
+% ESP: trabajar
+verbo(es, 'trabajo',    primera, singular, 'trabajar').
+verbo(es, 'trabajas',   segunda, singular, 'trabajar').
+verbo(es, 'trabaja',    tercera, singular, 'trabajar').
+verbo(es, 'trabajamos', primera, plural,   'trabajar').
+verbo(es, 'trabajáis',  segunda, plural,   'trabajar').
+verbo(es, 'trabajan',   tercera, plural,   'trabajar').
+
+% EN: work
+verbo(en, 'work',    primera, singular, 'work').
+verbo(en, 'work',    segunda, singular, 'work').
+verbo(en, 'works',   tercera, singular, 'work').
+verbo(en, 'work',    primera, plural,   'work').
+verbo(en, 'work',    segunda, plural,   'work').
+verbo(en, 'work',    tercera, plural,   'work').
+
+% ESP: ayudar
+verbo(es, 'ayudo',    primera, singular, 'ayudar').
+verbo(es, 'ayudas',   segunda, singular, 'ayudar').
+verbo(es, 'ayuda',    tercera, singular, 'ayudar').
+verbo(es, 'ayudamos', primera, plural,   'ayudar').
+verbo(es, 'ayudáis',  segunda, plural,   'ayudar').
+verbo(es, 'ayudan',   tercera, plural,   'ayudar').
+
+% EN: help
+verbo(en, 'help',    primera, singular, 'help').
+verbo(en, 'help',    segunda, singular, 'help').
+verbo(en, 'helps',   tercera, singular, 'help').
+verbo(en, 'help',    primera, plural,   'help').
+verbo(en, 'help',    segunda, plural,   'help').
+verbo(en, 'help',    tercera, plural,   'help').
+
 % -------------------------
 % ADJETIVOS 
 % -------------------------
