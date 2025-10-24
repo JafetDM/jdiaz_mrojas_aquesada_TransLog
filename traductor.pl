@@ -3,6 +3,7 @@
 % ========================================
 
 :- set_prolog_flag(encoding, utf8).
+% Carga de los tres modulos principales del Sistema Experto:
 :- consult('base_datos.pl').
 :- consult('bnf.pl').
 :- consult('reglas.pl').
@@ -26,12 +27,14 @@ iniciar :-
     writeln('================================'),
     write('Opción: '),
     read_line_to_string(user_input, S),
+    % Lógica del menú principal (usa corte y unificación)
     (   S="1" -> nl, modo(en, es)
     ;   S="2" -> nl, modo(es, en)
     ;   S="3" -> true
     ;   writeln('Opción inválida.'), iniciar
     ).
 
+% Configura y entra al modo de conversación seleccionado
 modo(IdO, IdD) :-
     limpiar_pantalla,
     idioma_nombre(IdO, NO),
@@ -44,6 +47,7 @@ modo(IdO, IdD) :-
     format('TransLog: Bienvenido!, estoy listo para traducir de ~w a ~w~n', [NO, ND]),
     loop(IdO, IdD).
 
+% Bucle de conversación (Motor de Interacción)
 loop(IdO, IdD) :-
     write('Usuario: '),
     read_line_to_string(user_input, In),
@@ -75,7 +79,9 @@ traducir_parrafo(IdO, IdD, Parrafo, ParrafoTrad) :-
     % vuelve a unir con espacios
     atomic_list_concat(Traducciones, ' ', ParrafoTrad).
 
+% Caso base: lista vacía
 traducir_lista_oraciones(_, _, [], []).
+% Caso recursivo: traduce O, formatea y sigue con el resto Os
 traducir_lista_oraciones(IdO, IdD, [O|Os], [Tfmt|Ts]) :-
     % intenta traducir; si falla, conserva original con marca
     (   traducir_con_bnf(IdO, O, T0)
@@ -98,6 +104,7 @@ capitalizar_y_punct(Sin, Punct, Con) :-
       )
     ).
 
+% Verifica si una cadena termina con un signo de puntuación
 ends_with_punct(S) :-
     sub_string(S, _, 1, 0, "."); sub_string(S, _, 1, 0, "?"); sub_string(S, _, 1, 0, "!").
 
@@ -110,25 +117,7 @@ limpiar_pantalla :-
 
 separador :- writeln('----------------------------------------------').
 
+% Utilidad de mapeo de nombres de idioma
 idioma_nombre(en, 'Inglés').
 idioma_nombre(es, 'Español').
 
-% ----------------------------
-% Predicados de prueba (compatibilidad con pruebas.pl)
-% ----------------------------
-prueba_traduccion(Idioma, Oracion) :-
-    format('   📝 "~w" → ', [Oracion]),
-    (   traducir_con_bnf(Idioma, Oracion, Traduccion)
-    ->  format('✓ "~w"~n', [Traduccion])
-    ;   writeln('✗ ERROR')
-    ).
-
-prueba_parrafo_en_es :-
-    Parrafo = "The cat runs. I eat food. She speaks.",
-    writeln('--- Caso de prueba: Inglés → Español ---'),
-    writeln('Entrada:'), writeln(Parrafo), writeln(''),
-    (   traducir_parrafo(en, es, Parrafo, Trad)
-    ->  writeln('Traducción:'), writeln(Trad)
-    ;   writeln('Error traduciendo el párrafo')
-    ),
-    writeln('----------------------------------------').

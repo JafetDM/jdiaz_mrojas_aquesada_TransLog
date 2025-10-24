@@ -48,6 +48,10 @@ pronombre(es, 'eso', 'it').
 pronombre(es, 'nosotros', 'we').
 pronombre(es, 'ellos', 'they').
 
+% -------------------------
+% RASGOS GRAMATICALES DE PRONOMBRES
+% -------------------------
+
 % Ingles
 pron_feats(en,'i',      primera, singular).
 pron_feats(en,'you',    segunda, singular). 
@@ -1463,6 +1467,8 @@ sinonimo(es, 'bonito', 'hermoso').
 % -------------------------
 % NUMERALES (palabras que representan números)
 % numeral(Idioma, Forma, Traduccion)
+% -------------------------
+
 numeral(en, 'one', 'uno').
 numeral(en, 'two', 'dos').
 numeral(en, 'three', 'tres').
