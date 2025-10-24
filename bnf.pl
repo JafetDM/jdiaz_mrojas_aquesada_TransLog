@@ -2,7 +2,7 @@
 :- use_module('base_datos.pl', [articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3, verbo/5]).
 :- set_prolog_flag(encoding, utf8).
 :- discontiguous oracion/4.
-:- discontiguous sintagma_verbal/4.
+:- discontiguous sintagma_verbal/5.
 
 % ========================================
 % GRAMÁTICA BNF PARA TRADUCCIÓN
@@ -56,9 +56,11 @@ GRAMÁTICA FORMAL EN BNF:
 % ========================================
 
 % ORACIÓN: SN + SV
+% ahora pasamos el SN al SV para que el verbo pueda concordar en
+% persona/número con el sujeto (especialmente pronombres)
 oracion(Idioma, oracion(SN, SV)) -->
     sintagma_nominal(Idioma, SN),
-    sintagma_verbal(Idioma, SV).
+    sintagma_verbal(Idioma, SN, SV).
 
 % ========================================
 % SINTAGMA NOMINAL
@@ -96,45 +98,81 @@ sintagma_nominal(es, sn(det(Det), sust(Sust), adj(Adj))) -->
 % ========================================
 
 % SV: Verbo simple
-sintagma_verbal(Idioma, sv(verbo(Verbo, Persona, Numero, Infinitivo))) -->
-    [Verbo],
-    { verbo(Idioma, Verbo, Persona, Numero, Infinitivo) }.
+sintagma_verbal(Idioma, SN, sv(verbo(Verbo, Persona, Numero, Infinitivo))) -->
+        [Verbo],
+        { % intentar deducir persona/numero a partir del sujeto cuando sea posible
+            sujeto_persona_numero(Idioma, SN, PersonaSN, NumeroSN),
+            % preferir la concordancia con el sujeto; si no existe esa forma,
+            % caer atrás a cualquier forma conocida del verbo
+            ( verbo(Idioma, Verbo, PersonaSN, NumeroSN, Infinitivo)
+            -> Persona = PersonaSN, Numero = NumeroSN
+            ; verbo(Idioma, Verbo, Persona, Numero, Infinitivo)
+            )
+        }.
 
 % SV: Verbo + SN (objeto directo)
-sintagma_verbal(Idioma, sv(verbo(Verbo, Persona, Numero, Infinitivo), SN)) -->
-    [Verbo], { verbo(Idioma, Verbo, Persona, Numero, Infinitivo) },
-    sintagma_nominal(Idioma, SN).
+sintagma_verbal(Idioma, SNsubj, sv(verbo(Verbo, Persona, Numero, Infinitivo), SN)) -->
+        [Verbo],
+        { sujeto_persona_numero(Idioma, SNsubj, PersonaSN, NumeroSN),
+            ( verbo(Idioma, Verbo, PersonaSN, NumeroSN, Infinitivo)
+            -> Persona = PersonaSN, Numero = NumeroSN
+            ; verbo(Idioma, Verbo, Persona, Numero, Infinitivo)
+            )
+        },
+        sintagma_nominal(Idioma, SN).
 
 % SV: Verbo + Prep + SN
-sintagma_verbal(Idioma, sv(verbo(Verbo, Persona, Numero, Infinitivo), prep(Prep), SN)) -->
-    [Verbo], { verbo(Idioma, Verbo, Persona, Numero, Infinitivo) },
-    [Prep], { es_preposicion(Idioma, Prep) },
-    sintagma_nominal(Idioma, SN).
+sintagma_verbal(Idioma, SNsubj, sv(verbo(Verbo, Persona, Numero, Infinitivo), prep(Prep), SN)) -->
+        [Verbo],
+        { sujeto_persona_numero(Idioma, SNsubj, PersonaSN, NumeroSN),
+            ( verbo(Idioma, Verbo, PersonaSN, NumeroSN, Infinitivo)
+            -> Persona = PersonaSN, Numero = NumeroSN
+            ; verbo(Idioma, Verbo, Persona, Numero, Infinitivo)
+            )
+        },
+        [Prep], { es_preposicion(Idioma, Prep) },
+        sintagma_nominal(Idioma, SN).
 
 % SV: Verbo + Adj
-sintagma_verbal(Idioma, sv(verbo(Verbo, Persona, Numero, Infinitivo), adj(Adj))) -->
-    [Verbo], { verbo(Idioma, Verbo, Persona, Numero, Infinitivo) },
-    [Adj], { es_adjetivo(Idioma, Adj) }.
+sintagma_verbal(Idioma, SNsubj, sv(verbo(Verbo, Persona, Numero, Infinitivo), adj(Adj))) -->
+        [Verbo],
+        { sujeto_persona_numero(Idioma, SNsubj, PersonaSN, NumeroSN),
+            ( verbo(Idioma, Verbo, PersonaSN, NumeroSN, Infinitivo)
+            -> Persona = PersonaSN, Numero = NumeroSN
+            ; verbo(Idioma, Verbo, Persona, Numero, Infinitivo)
+            )
+        },
+        [Adj], { es_adjetivo(Idioma, Adj) }.
+
+% Helper: obtener persona/numero a partir del sujeto (SN)
+sujeto_persona_numero(Idioma, sn(pron(Pron)), Persona, Numero) :- !,
+        % pronombres y rasgos ya están en la base (pron_feats) y en minúsculas
+        ( pron_feats(Idioma, Pron, Persona, Numero) -> true
+        ; % fallback si no hay features registrados
+            Persona = tercera, Numero = singular
+        ).
+sujeto_persona_numero(_, _SN, tercera, singular).
 
 % =========================
 % NEGACIÓN
 % =========================
 % ES:  SN + "no" + Verbo (+ SN/Adj/Prep ...)
-sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf))) -->
+% ahora las reglas aceptan el sujeto (SNsubj) como primer argumento
+sintagma_verbal(es, _SNsubj, sv(neg, verbo(Verbo,Persona,Numero,Inf))) -->
     ['no'], [Verbo],
     { verbo(es, Verbo, Persona, Numero, Inf) }.
 
-sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), SN)) -->
+sintagma_verbal(es, _SNsubj, sv(neg, verbo(Verbo,Persona,Numero,Inf), SN)) -->
     ['no'], [Verbo],
     { verbo(es, Verbo, Persona, Numero, Inf) },
     sintagma_nominal(es, SN).
 
-sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), adj(Adj))) -->
+sintagma_verbal(es, _SNsubj, sv(neg, verbo(Verbo,Persona,Numero,Inf), adj(Adj))) -->
     ['no'], [Verbo],
     { verbo(es, Verbo, Persona, Numero, Inf) },
     [Adj], { es_adjetivo(es, Adj) }.
 
-sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), prep(Prep), SN)) -->
+sintagma_verbal(es, _SNsubj, sv(neg, verbo(Verbo,Persona,Numero,Inf), prep(Prep), SN)) -->
     ['no'], [Verbo],
     { verbo(es, Verbo, Persona, Numero, Inf) },
     [Prep], { es_preposicion(es, Prep) },
@@ -142,39 +180,39 @@ sintagma_verbal(es, sv(neg, verbo(Verbo,Persona,Numero,Inf), prep(Prep), SN)) --
 
 % EN:  do/does + not + (base)verb (+ SN/Adj/Prep ...)
 %     Caso general (no 'be')
-sintagma_verbal(en, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf))) -->
+sintagma_verbal(en, _SNsubj, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf))) -->
     [Aux], { aux_do(Aux, Form, Persona, Numero) },
     ['not'],
     [Base],
     { base_english_verb(Base, Inf), \+ Inf = be }.
 
-sintagma_verbal(en, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf), SN)) -->
+sintagma_verbal(en, _SNsubj, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf), SNobj)) -->
     [Aux], { aux_do(Aux, Form, Persona, Numero) },
     ['not'],
     [Base], { base_english_verb(Base, Inf), \+ Inf = be },
-    sintagma_nominal(en, SN).
+    sintagma_nominal(en, SNobj).
 
-sintagma_verbal(en, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf), prep(Prep), SN)) -->
+sintagma_verbal(en, _SNsubj, sv(neg_do(Form), verbo(base(Inf),Persona,Numero,Inf), prep(Prep), SNobj)) -->
     [Aux], { aux_do(Aux, Form, Persona, Numero) },
     ['not'],
     [Base], { base_english_verb(Base, Inf), \+ Inf = be },
     [Prep], { es_preposicion(en, Prep) },
-    sintagma_nominal(en, SN).
+    sintagma_nominal(en, SNobj).
 
 % EN:  'be' + not (+ Adj / + SN)
-sintagma_verbal(en, sv(neg_be, verbo(Be,Persona,Numero,be))) -->
+sintagma_verbal(en, _SNsubj, sv(neg_be, verbo(Be,Persona,Numero,be))) -->
     [Be], { verbo(en, Be, Persona, Numero, be) },
     ['not'].
 
-sintagma_verbal(en, sv(neg_be, verbo(Be,Persona,Numero,be), adj(Adj))) -->
+sintagma_verbal(en, _SNsubj, sv(neg_be, verbo(Be,Persona,Numero,be), adj(Adj))) -->
     [Be], { verbo(en, Be, Persona, Numero, be) },
     ['not'],
     [Adj], { es_adjetivo(en, Adj) }.
 
-sintagma_verbal(en, sv(neg_be, verbo(Be,Persona,Numero,be), SN)) -->
+sintagma_verbal(en, _SNsubj, sv(neg_be, verbo(Be,Persona,Numero,be), SNobj)) -->
     [Be], { verbo(en, Be, Persona, Numero, be) },
     ['not'],
-    sintagma_nominal(en, SN).
+    sintagma_nominal(en, SNobj).
 
 % =========================
 % PREGUNTAS SÍ/NO (sin signo)
@@ -231,8 +269,16 @@ parsear_bnf(Idioma, ListaPalabras, Estructura) :-
 % Parsear desde string
 parsear_oracion_bnf(Idioma, OracionTexto, Estructura) :-
     atomic_list_concat(Palabras, ' ', OracionTexto),
-    maplist(downcase_atom, Palabras, PalabrasMin),
+    downcase_list(Palabras, PalabrasMin),
     parsear_bnf(Idioma, PalabrasMin, Estructura).
+
+% downcase_list(+ListaIn, -ListaOut) - bajar a minúsculas cada átomo/string
+downcase_list([], []).
+downcase_list([H|T], [H2|T2]) :-
+    (   atom(H) -> downcase_atom(H, H2)
+    ;   atom_string(AH, H), downcase_atom(AH, H2)
+    ),
+    downcase_list(T, T2).
 
 % ========================================
 % VALIDACIÓN DE GRAMÁTICA

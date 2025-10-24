@@ -112,3 +112,23 @@ separador :- writeln('----------------------------------------------').
 
 idioma_nombre(en, 'Inglés').
 idioma_nombre(es, 'Español').
+
+% ----------------------------
+% Predicados de prueba (compatibilidad con pruebas.pl)
+% ----------------------------
+prueba_traduccion(Idioma, Oracion) :-
+    format('   📝 "~w" → ', [Oracion]),
+    (   traducir_con_bnf(Idioma, Oracion, Traduccion)
+    ->  format('✓ "~w"~n', [Traduccion])
+    ;   writeln('✗ ERROR')
+    ).
+
+prueba_parrafo_en_es :-
+    Parrafo = "The cat runs. I eat food. She speaks.",
+    writeln('--- Caso de prueba: Inglés → Español ---'),
+    writeln('Entrada:'), writeln(Parrafo), writeln(''),
+    (   traducir_parrafo(en, es, Parrafo, Trad)
+    ->  writeln('Traducción:'), writeln(Trad)
+    ;   writeln('Error traduciendo el párrafo')
+    ),
+    writeln('----------------------------------------').
