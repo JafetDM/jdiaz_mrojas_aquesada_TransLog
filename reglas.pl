@@ -85,9 +85,16 @@ traducir_sn(sn(pron(Pron)), IdiomaOrigen, _Destino, sn(pron(PronTrad))) :-
 traducir_sn(sn(num(Num)), IdiomaOrigen, _Destino, sn(num(NumTrad))) :-
     base_datos:numeral(IdiomaOrigen, Num, NumTrad).
 
-% SN = Sustantivo (solo)
-traducir_sn(sn(sust(Sust)), IdiomaOrigen, _Destino, sn(sust(SustTrad))) :-
-    base_datos:traducir(IdiomaOrigen, Sust, SustTrad).
+% SN = Sustantivo (solo). Si es plural en origen, intenta normalizar al singular y pluralizar en destino.
+traducir_sn(sn(sust(Sust)), IdiomaOrigen, IdiomaDestino, sn(sust(SustTrad))) :-
+        % 1) Si la misma forma está en el léxico de sustantivos (singular/plural recogido), usar traducir/3
+        ( base_datos:sustantivo(IdiomaOrigen, Sust, _) -> base_datos:traducir(IdiomaOrigen, Sust, SustTrad)
+        ; % 2) Si no, intentar heurística: si termina en 's' y su raíz está en el léxico, traducir la raíz y pluralizar en destino
+            ( atom_concat(Stem, 's', Sust), Stem \= '', base_datos:sustantivo(IdiomaOrigen, Stem, _) )
+                -> ( base_datos:traducir(IdiomaOrigen, Stem, StemTrad), pluralize(StemTrad, IdiomaDestino, SustTrad) )
+        ; % 3) fallback: devolver la misma forma si no se encuentra en el léxico
+            SustTrad = Sust
+        ).
 
 % SN = Determinante + Sustantivo
 traducir_sn(sn(det(Det), sust(Sust)), IdiomaOrigen, _Destino,
@@ -290,6 +297,46 @@ traducir_estructura(pregunta(SN, sv(q_be, verbo(_Be, Persona, Numero, be), adj(A
     base_datos:traducir(en, Adj, AdjEs),
     SVes = sv(verbo(V, Persona, Numero, estar), adj(AdjEs)).
 
+% -------------------------
+% Preguntas iniciadas por 'how' (EN -> ES)
+% Se mapean a una estructura especial sv(how, ...) para generar 'cómo ...'
+% how + do-question
+traducir_estructura(pregunta_how(SN, sv(q_do(_), verbo(base(Inf), _PersonaAux, _NumeroAux, Inf))), en, es,
+                    oracion(SNes, sv(how, verbo(V, PersonaSN, NumeroSN, InfEs)))) :-
+    traducir_sn(SN, en, es, SNes),
+    % determinar persona/numero a partir del sujeto SN (no del auxiliar)
+    ( SN = sn(pron(Pron)) -> ( base_datos:pron_feats(en, Pron, PersonaSN, NumeroSN) -> true ; PersonaSN = tercera, NumeroSN = singular )
+    ; ( SN = sn(num(_)) ; SN = sn(num(_), _) ; SN = sn(det(_), num(_), _) ) -> PersonaSN = tercera, NumeroSN = plural
+    ; PersonaSN = tercera, NumeroSN = singular
+    ),
+    ( base_datos:traduccion_verbo(InfEs, Inf) -> true ; InfEs = Inf ),
+    base_datos:verbo(es, V, PersonaSN, NumeroSN, InfEs).
+
+traducir_estructura(pregunta_how(SN, sv(q_do(_), verbo(base(Inf), _PAux, _NAux, Inf), SN2)), en, es,
+                    oracion(SNes, sv(how, verbo(V, PersonaSN, NumeroSN, InfEs), SN2es))) :-
+    traducir_sn(SN, en, es, SNes),
+    traducir_sn(SN2, en, es, SN2es),
+    % determinar persona/numero a partir del sujeto SN
+    ( SN = sn(pron(Pron)) -> ( base_datos:pron_feats(en, Pron, PersonaSN, NumeroSN) -> true ; PersonaSN = tercera, NumeroSN = singular )
+    ; ( SN = sn(num(_)) ; SN = sn(num(_), _) ; SN = sn(det(_), num(_), _) ) -> PersonaSN = tercera, NumeroSN = plural
+    ; PersonaSN = tercera, NumeroSN = singular
+    ),
+    ( base_datos:traduccion_verbo(InfEs, Inf) -> true ; InfEs = Inf ),
+    base_datos:verbo(es, V, PersonaSN, NumeroSN, InfEs).
+
+% how + be-question
+traducir_estructura(pregunta_how(SN, sv(q_be, verbo(_Be, Persona, Numero, be))), en, es,
+                    oracion(SNes, sv(how, verbo(V, Persona, Numero, estar)))) :-
+    traducir_sn(SN, en, es, SNes),
+    base_datos:verbo(es, V, Persona, Numero, estar).
+
+traducir_estructura(pregunta_how(SN, sv(q_be, verbo(_Be, Persona, Numero, be), adj(Adj))), en, es,
+                    oracion(SNes, sv(how, verbo(V, Persona, Numero, estar), adj(AdjEs)))) :-
+    traducir_sn(SN, en, es, SNes),
+    base_datos:traducir(en, Adj, AdjEs),
+    base_datos:verbo(es, V, Persona, Numero, estar).
+
+
 % Pregunta (ES -> EN: Inversión con auxiliar 'do' o 'be')
 traducir_estructura(pregunta(SN, sv(q_es, verbo(_Ve, Persona, Numero, Inf))), es, en,
                     pregunta(SNen, SVen)) :-
@@ -395,6 +442,18 @@ traducir_verbo_conjugado(InfOrigen, Persona, Numero, IdiomaOrigen, IdiomaDestino
 % ========================================
 % GENERACIÓN DE ORACIONES
 % ========================================
+
+% Generación especial para preguntas iniciadas por 'how' (sv(how,...))
+% Produce la forma española: "cómo <verbo> [<SN_obj>]" (omitiendo normalmente el pronombre sujeto)
+generar_oracion(oracion(_SN, sv(how, verbo(V,_,_,_))), es, Oracion) :-
+    atomic_list_concat(['cómo', V], ' ', Oracion).
+
+generar_oracion(oracion(_SN, sv(how, verbo(V,_,_,_), SNobj)), es, Oracion) :-
+    generar_sn(SNobj, es, TSN),
+    atomic_list_concat(['cómo', V, TSN], ' ', Oracion).
+
+generar_oracion(oracion(_SN, sv(how, verbo(V,_,_,_), adj(Adj))), es, Oracion) :-
+    atomic_list_concat(['cómo', V, Adj], ' ', Oracion).
 
 % **REGLA CLAVE DE EXPERTO (Español):**
 % Ajusta el adjetivo por género/número del SUJETO antes de generar el texto final.

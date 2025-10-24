@@ -90,6 +90,24 @@ oracion(en, pregunta(SNsuj, sv(q_be, verbo(Be, Persona, Numero, be), SNobj))) --
     sintagma_nominal(en, SNsuj),
     sintagma_nominal(en, SNobj).
 
+% EN: how + do/does + SN + (base)verb (+ SN)  e.g., "how do you eat"
+oracion(en, pregunta_how(SNsuj, sv(q_do(Form), verbo(base(Inf), Persona, Numero, Inf)))) -->
+    ['how'], [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    sintagma_nominal(en, SNsuj),
+    [Base], { base_english_verb(Base, Inf), \+ Inf = be }.
+
+% EN: how + do/does + SN + (base)verb + SN (objeto)
+oracion(en, pregunta_how(SNsuj, sv(q_do(Form), verbo(base(Inf), Persona, Numero, Inf), SN2))) -->
+    ['how'], [Aux], { aux_do(Aux, Form, Persona, Numero) },
+    sintagma_nominal(en, SNsuj),
+    [Base], { base_english_verb(Base, Inf), \+ Inf = be },
+    sintagma_nominal(en, SN2).
+
+% EN: how + 'be' + SN (+ Adj / + SN)   e.g., "how are you"
+oracion(en, pregunta_how(SNsuj, sv(q_be, verbo(Be, Persona, Numero, be)))) -->
+    ['how'], [Be], { verbo(en, Be, Persona, Numero, be) },
+    sintagma_nominal(en, SNsuj).
+
 % ES: inversión simple Verbo + SN (p. ej. "¿Hablas tú?")
 oracion(es, pregunta(SNsuj, sv(q_es, verbo(Verbo, Persona, Numero, Inf)))) -->
     [Verbo], { verbo(es, Verbo, Persona, Numero, Inf) },
