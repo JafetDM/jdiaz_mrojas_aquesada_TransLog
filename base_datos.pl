@@ -1,4 +1,4 @@
-:- module(base_datos,[ traduccion_verbo/2, verbo/5, traducir/3, articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3, sinonimo/3,genero_sust_es/2, pron_feats/4]).
+:- module(base_datos,[ traduccion_verbo/2, verbo/5, traducir/3, articulo/3, pronombre/3, sustantivo/3, adjetivo/3, preposicion/3, sinonimo/3, genero_sust_es/2, pron_feats/4, numeral/3]).
 :- set_prolog_flag(encoding, utf8).
 
 % ========================================
@@ -257,6 +257,7 @@ sustantivo(en, 'police', 'policía').
 sustantivo(en, 'chef', 'chef').
 sustantivo(en, 'artist', 'artista').
 sustantivo(en, 'writer', 'escritor').
+sustantivo(en, 'hello', 'hola').
 
 sustantivo(es, 'león', 'lion').
 sustantivo(es, 'tigre', 'tiger').
@@ -408,6 +409,7 @@ sustantivo(es, 'bosque', 'forest').
 sustantivo(es, 'océano', 'ocean').
 sustantivo(es, 'clima', 'weather').
 sustantivo(es, 'estación', 'season').
+sustantivo(es, 'hola', 'hello').
 
 % -------------------------
 % GENERO DE SUSTANTIVOS ESPAÑOLES
@@ -1457,6 +1459,31 @@ sinonimo(es, 'chico',  'pequeño').
 sinonimo(es, 'contento','feliz').
 sinonimo(es, 'apenado','triste').
 sinonimo(es, 'bonito', 'hermoso').
+
+% -------------------------
+% NUMERALES (palabras que representan números)
+% numeral(Idioma, Forma, Traduccion)
+numeral(en, 'one', 'uno').
+numeral(en, 'two', 'dos').
+numeral(en, 'three', 'tres').
+numeral(en, 'four', 'cuatro').
+numeral(en, 'five', 'cinco').
+numeral(en, 'six', 'seis').
+numeral(en, 'seven', 'siete').
+numeral(en, 'eight', 'ocho').
+numeral(en, 'nine', 'nueve').
+numeral(en, 'ten', 'diez').
+
+numeral(es, 'uno', 'one').
+numeral(es, 'dos', 'two').
+numeral(es, 'tres', 'three').
+numeral(es, 'cuatro', 'four').
+numeral(es, 'cinco', 'five').
+numeral(es, 'seis', 'six').
+numeral(es, 'siete', 'seven').
+numeral(es, 'ocho', 'eight').
+numeral(es, 'nueve', 'nine').
+numeral(es, 'diez', 'ten').
 
 % ===================================================
 % TRADUCCIÓN LÉXICA BÁSICA (usa sinónimos primero)

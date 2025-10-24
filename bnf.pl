@@ -76,6 +76,22 @@ sintagma_nominal(Idioma, sn(sust(Sust))) -->
     [Sust],
     { es_sustantivo(Idioma, Sust) }.
 
+% SN: Número solo (e.g., 'two')
+sintagma_nominal(Idioma, sn(num(Num))) -->
+    [Num],
+    { es_numero(Idioma, Num) }.
+
+% SN: Número + Sustantivo (e.g., 'two cats')
+sintagma_nominal(Idioma, sn(num(Num), sust(Sust))) -->
+    [Num], { es_numero(Idioma, Num) },
+    [Sust], { es_sustantivo(Idioma, Sust) }.
+
+% SN: Det + Número + Sustantivo (e.g., 'the two cats')
+sintagma_nominal(Idioma, sn(det(Det), num(Num), sust(Sust))) -->
+    [Det], { es_determinante(Idioma, Det) },
+    [Num], { es_numero(Idioma, Num) },
+    [Sust], { es_sustantivo(Idioma, Sust) }.
+
 % SN: Det + Sust
 sintagma_nominal(Idioma, sn(det(Det), sust(Sust))) -->
     [Det], { es_determinante(Idioma, Det) },
@@ -151,6 +167,9 @@ sujeto_persona_numero(Idioma, sn(pron(Pron)), Persona, Numero) :- !,
         ; % fallback si no hay features registrados
             Persona = tercera, Numero = singular
         ).
+sujeto_persona_numero(_, sn(num(_)), tercera, plural) :- !.
+sujeto_persona_numero(_, sn(num(_), sust(_)), tercera, plural) :- !.
+sujeto_persona_numero(_, sn(det(_), num(_), sust(_)), tercera, plural) :- !.
 sujeto_persona_numero(_, _SN, tercera, singular).
 
 % =========================
@@ -301,8 +320,16 @@ mostrar_estructura(Idioma, OracionTexto) :-
 es_determinante(Idioma, Palabra) :- articulo(Idioma, Palabra, _).
 es_pronombre(Idioma, Palabra) :- pronombre(Idioma, Palabra, _).
 es_sustantivo(Idioma, Palabra) :- sustantivo(Idioma, Palabra, _).
+% simple plural heuristic: if word ends with 's' try stem without 's'
+es_sustantivo(Idioma, Palabra) :-
+    atom_concat(Stem, 's', Palabra),
+    Stem \= '',
+    sustantivo(Idioma, Stem, _).
 es_adjetivo(Idioma, Palabra) :- adjetivo(Idioma, Palabra, _).
 es_preposicion(Idioma, Palabra) :- preposicion(Idioma, Palabra, _).
+
+% números
+es_numero(Idioma, Palabra) :- numeral(Idioma, Palabra, _).
 
 % ========================================
 % EJEMPLOS DE USO

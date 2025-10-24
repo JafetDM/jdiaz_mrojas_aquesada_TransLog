@@ -67,6 +67,10 @@ traducir_estructura(oracion(SN, SV), IdiomaOrigen, IdiomaDestino,
 traducir_sn(sn(pron(Pron)), IdiomaOrigen, _Destino, sn(pron(PronTrad))) :-
     base_datos:traducir(IdiomaOrigen, Pron, PronTrad).
 
+% Numeral solo
+traducir_sn(sn(num(Num)), IdiomaOrigen, _Destino, sn(num(NumTrad))) :-
+    base_datos:numeral(IdiomaOrigen, Num, NumTrad).
+
 traducir_sn(sn(sust(Sust)), IdiomaOrigen, _Destino, sn(sust(SustTrad))) :-
     base_datos:traducir(IdiomaOrigen, Sust, SustTrad).
 
@@ -74,6 +78,58 @@ traducir_sn(sn(det(Det), sust(Sust)), IdiomaOrigen, _Destino,
             sn(det(DetTrad), sust(SustTrad))) :-
     base_datos:traducir(IdiomaOrigen, Det, DetTrad),
     base_datos:traducir(IdiomaOrigen, Sust, SustTrad).
+
+% Det + Num + Sust -> traducir cada parte
+traducir_sn(sn(det(Det), num(Num), sust(Sust)), IdiomaOrigen, IdiomaDestino,
+        sn(det(DetTrad), num(NumTrad), sust(SustTrad))) :-
+    base_datos:traducir(IdiomaOrigen, Det, DetTrad),
+    base_datos:numeral(IdiomaOrigen, Num, NumTrad),
+    % normalize plural nouns (simple heuristic)
+    ( base_datos:sustantivo(IdiomaOrigen, Sust, _) -> Base = Sust
+    ; atom_concat(Stem, 's', Sust), base_datos:sustantivo(IdiomaOrigen, Stem, _) -> Base = Stem
+    ; Base = Sust
+    ),
+    base_datos:traducir(IdiomaOrigen, Base, SustBaseTrad),
+    % pluralize in target language when numeral indicates plurality
+    ( is_singular_number(NumTrad, IdiomaDestino) -> SustTrad = SustBaseTrad
+    ; pluralize(SustBaseTrad, IdiomaDestino, SustTrad)
+    ).
+
+% Num + Sust -> traducir numero y sustantivo
+traducir_sn(sn(num(Num), sust(Sust)), IdiomaOrigen, IdiomaDestino,
+        sn(num(NumTrad), sust(SustTrad))) :-
+    base_datos:numeral(IdiomaOrigen, Num, NumTrad),
+    % normalize plural nouns (simple heuristic)
+    ( base_datos:sustantivo(IdiomaOrigen, Sust, _) -> Base = Sust
+    ; atom_concat(Stem, 's', Sust), base_datos:sustantivo(IdiomaOrigen, Stem, _) -> Base = Stem
+    ; Base = Sust
+    ),
+    base_datos:traducir(IdiomaOrigen, Base, SustBaseTrad),
+    ( is_singular_number(NumTrad, IdiomaDestino) -> SustTrad = SustBaseTrad
+    ; pluralize(SustBaseTrad, IdiomaDestino, SustTrad)
+    ).
+
+% -------------------------
+% Helpers: determine if a translated numeral represents singular in the target language
+% -------------------------
+is_singular_number(NumAtom, es) :- atom_string(NumAtom, S), member(S, ['uno', '1']).
+is_singular_number(NumAtom, en) :- atom_string(NumAtom, S), member(S, ['one', '1']).
+is_singular_number(NumAtom, _) :- atom_string(NumAtom, S), S = '1'.
+
+% -------------------------
+% Very small pluralizer for target language (ES/EN). Covers common regular cases.
+% -------------------------
+pluralize(Noun, es, Plural) :-
+    ( ends_con(Noun, 'z') -> sub_atom(Noun, 0, _, 1, Stem), atom_concat(Stem, 'ces', Plural)
+    ; ultima_letra_vocal(Noun) -> atom_concat(Noun, 's', Plural)
+    ; atom_concat(Noun, 'es', Plural)
+    ).
+
+pluralize(Noun, en, Plural) :-
+    ( ends_con(Noun, 'y'), \+ ultima_letra_vocal(Noun) -> sub_atom(Noun, 0, _, 1, Stem), atom_concat(Stem, 'ies', Plural)
+    ; ends_con(Noun, 's') ; ends_con(Noun, 'x') ; ends_con(Noun, 'z') ; ends_con(Noun, 'ch') ; ends_con(Noun, 'sh') -> atom_concat(Noun, 'es', Plural)
+    ; atom_concat(Noun, 's', Plural)
+    ).
 
 % EN Det+Adj+N -> ES Det+N+Adj
 traducir_sn(sn(det(Det), adj(Adj), sust(Sust)), en, es,
@@ -300,6 +356,13 @@ generar_oracion(oracion(SN, SV), Idioma, Oracion) :-
 
 generar_sn(sn(pron(Pron)), _, Pron).
 generar_sn(sn(sust(Sust)), _, Sust).
+
+% Numeral
+generar_sn(sn(num(Num)), _, Num).
+generar_sn(sn(num(Num), sust(Sust)), Idioma, Texto) :-
+    atomic_list_concat([Num, Sust], ' ', Texto).
+generar_sn(sn(det(Det), num(Num), sust(Sust)), Idioma, Texto) :-
+    atomic_list_concat([Det, Num, Sust], ' ', Texto).
 
 % --- Español: ajustar artículo y (si procede) adjetivo ---
 generar_sn(sn(det(Det), sust(Sust)), es, Texto) :-
